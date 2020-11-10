@@ -1,8 +1,14 @@
-import { Body, Controller, Delete, ForbiddenException, Get, HttpException, HttpStatus, Param, ParseIntPipe, Post, Put, UseFilters } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
+import { ValidatorPipe } from '../common/pipes/validation.pipe';
 import { CreateSiteDto } from './dto/createSite.dto';
 import { SiteService } from './site.service';
 
+@UseGuards(RolesGuard)
+@UseInterceptors(LoggingInterceptor)
 @Controller('site')
 export class SiteController {
 
@@ -29,9 +35,10 @@ export class SiteController {
   }
 
   @Post('/create')
+  // @UsePipes(new ValidatorPi  pe(SiteSchema))
   @UseFilters(HttpExceptionFilter)
   async createSite(
-    @Body() createSiteDto: CreateSiteDto
+    @Body(ValidatorPipe) createSiteDto: CreateSiteDto
   ) {
     this.siteService.create(createSiteDto)
     // throw new ForbiddenException()
@@ -47,6 +54,7 @@ export class SiteController {
   }
 
   @Delete('/delete/:id')
+  @Roles('admin')
   async deleteSite(
     @Param('id') id: string
   ) {
