@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { SiteService } from './site.service';
 
 @Module({
-  providers: [SiteService]
+  providers: [SiteService],
+  exports:[SiteService]
+  
 })
 export class SiteModule {}
