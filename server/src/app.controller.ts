@@ -13,7 +13,7 @@ export class AppController {
     
     return this.authService.login(user)
   }
-
+  // @Body(new ParseArrayPipe({ items: CreateUserDto })) //чтоб принимать масивы - юзать парс арай
   @UseGuards(JwtAuthGuard)
   @Get('user')
   async user(@Request() req){

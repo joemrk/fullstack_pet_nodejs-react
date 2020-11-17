@@ -6,6 +6,11 @@ import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { SitesModule } from './sites/sites.module';
+import { Site } from './sites/entities/site.entity';
+import { Hoster } from './hosters/entities/hoster.entity';
+import { HostersService } from './hosters/hosters.service';
+import { HostersModule } from './hosters/hosters.module';
 
 @Module({
   imports: [
@@ -20,12 +25,15 @@ import { UsersModule } from './users/users.module';
         username: process.env.POSTGRESQL_USER,
         password: process.env.POSTGRESQL_PASS,
         database: process.env.POSTGRESQL_DB_NAME,
-        entities: [User],
+        entities: [User, Site, Hoster ],
         synchronize: true,
       }
-    )
+    ),
+    SitesModule,
+    HostersModule
   ],
   controllers: [AppController],
+  providers: [HostersService],
   // exports:[ConfigModule]
 })
 export class AppModule implements NestModule {
