@@ -1,8 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Hoster } from './entities/hoster.entity';
+import { HostersService } from './hosters.service';
+import { HostersResolver } from './hosters.resolver';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Hoster, HosterSchema } from './schemas/hoster.schema';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Hoster])],
+  imports: [
+    MongooseModule.forFeature([{ name: Hoster.name, schema: HosterSchema }]),
+  ],
+  providers: [HostersResolver, HostersService]
 })
 export class HostersModule {}

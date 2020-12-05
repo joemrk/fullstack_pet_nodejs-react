@@ -1,0 +1,7 @@
+query Sites {
+  sites {
+    id
+    domain
+    holder
+  }
+}

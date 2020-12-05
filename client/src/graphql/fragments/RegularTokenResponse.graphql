@@ -1,0 +1,4 @@
+fragment RegularTokenResponse on TokenResponse{
+  error
+  token
+}

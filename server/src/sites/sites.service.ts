@@ -1,21 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
-import { Site } from './entities/site.entity';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
+import { SiteInput } from './dto/site.input';
+import { Site, SiteDocument } from './schemas/site.schema';
 
 @Injectable()
 export class SitesService {
 
   constructor(
-    @InjectRepository(Site) private siteRepo: Repository<Site>,
-    private connection: Connection
+    @InjectModel(Site.name) private siteModel: Model<SiteDocument>,
+    @InjectConnection() private connection: Connection,
   ) { }
 
-  async getAll(): Promise<Site[]> {
-    return await this.siteRepo.find()
+  async findAll(): Promise<Site[]> {
+    return await this.siteModel.find().exec()
   }
 
-  async getOne(id: number): Promise<Site>{
-    return await this.siteRepo.findOne(id)
+  async create(domain: SiteInput): Promise<Site> {
+    const newSite = new this.siteModel(domain)
+    return await newSite.save()
+  }
+
+  async findByHolder(holderId: string ): Promise<Site[]>{
+    return await this.siteModel.find({holder: holderId})
   }
 }

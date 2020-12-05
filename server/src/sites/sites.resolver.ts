@@ -1,29 +1,36 @@
-import { Args, Int, Query, Resolver } from "@nestjs/graphql";
-import { Site } from "./entities/site.entity";
-import { SitesService } from "./sites.service";
+import { Resolver,Query, Mutation, Args  } from "@nestjs/graphql";
+import { SiteEntity } from "./entities/site.entity";
+import { SiteInput } from "./dto/site.input";
+import { SitesService } from './sites.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UseGuards } from "@nestjs/common";
+import { Ctx } from '../users/decorators/context.decorator';
 
-@Resolver(Site)
-export class SitesResolver {
+
+@Resolver(SiteEntity)
+@UseGuards(JwtAuthGuard)
+export class SitesResolver{
+
   constructor(
-    private sitesService: SitesService
-  ) { }
+    private readonly sitesService: SitesService
+  ){}
 
-
-  @Query(() => Site)
-  async sites(): Promise<Site[]> {
-    return await this.sitesService.getAll()
+  @Query(()=> [SiteEntity])
+  async sites(@Ctx() ctx){
+    // console.log(ctx.user);
+    
+    return await this.sitesService.findAll()
   }
 
-  @Query(() => Site)
-  async site(@Args('id', {type: ()=> Int}) id: number): Promise<Site> {
-    return await this.sitesService.getOne(id)
+  @Mutation(()=> SiteEntity)
+  async createSite(
+    @Args('inputs') inputs: SiteInput
+    ) {
+    return await this.sitesService.create(inputs)
   }
 
-  // @ResolveField()
-  // async allOfHolder(@Parent() holder: User) {
-  //   const { id } = holder;
-  //   return this.sitesService.getAll({ holderId: id });
-  // }
-
-
+  @Query(()=> [SiteEntity])
+  async getSitesByHolder(@Args('holderId') holderId: string){
+    return await this.sitesService.findByHolder(holderId)
+  }
 }

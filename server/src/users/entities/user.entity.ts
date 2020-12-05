@@ -1,26 +1,17 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Site } from '../../sites/entities/site.entity';
+import { ObjectType, Field, ID } from "@nestjs/graphql"
+
 
 @ObjectType()
-@Entity()
-export class User {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id!: number
+export class UserEntity{
+  @Field(()=> ID)
+  id?: string
 
   @Field()
-  @Column({ unique: true })
-  username!: string
+  username: string
 
   @Field()
-  @Column({ unique: true })
-  password!: string
+  password: string
 
   @Field()
-  @Column("simple-array")
-  roles!: string[]
-
-  @OneToMany(() => Site, site => site.holder)
-  sites: Site[]
+  role: string
 }

@@ -1,29 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { GraphQLModule } from '@nestjs/graphql'
-import { JwtModule } from '@nestjs/jwt'
-import { PassportModule } from '@nestjs/passport'
-import { UsersModule } from '../users/users.module'
-import { AuthService } from './auth.service'
-import { JwtStrategy } from './jwt.strategy'
-import { join } from 'path'
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { UsersModule } from '../users/users.module';
+import { AuthResolver } from './auth.resolver';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
     UsersModule,
-    GraphQLModule.forRootAsync({
-      useFactory: () => ({
-        debug: true,
-        typePaths: ['./**/*.graphql'],
-        definitions: {
-          path: join(process.cwd(), 'src/graphql.ts'),
-          outputAs: 'class',
-          emitTypenameField: true,
-          skipResolverArgs: true,
-          // watch: true,
-        },
-      }),
-    }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -34,7 +20,7 @@ import { join } from 'path'
       }),
     })
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, AuthResolver, JwtStrategy],
   exports: [AuthService]
 })
 export class AuthModule { }

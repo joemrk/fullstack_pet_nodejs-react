@@ -1,11 +1,14 @@
-import { Site } from './entities/site.entity';
 import { Module } from '@nestjs/common';
 import { SitesService } from './sites.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
+import {  Site, SiteSchema } from './schemas/site.schema';
+import { SitesResolver } from './sites.resolver';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Site])],
-  providers: [SitesService],
-  exports: [SitesService]
+  imports: [
+    MongooseModule.forFeature([{ name: Site.name, schema: SiteSchema }]),
+  ],
+  providers: [SitesService, SitesResolver],
+  exports: [SitesService],
 })
-export class SitesModule {}
+export class SitesModule { }

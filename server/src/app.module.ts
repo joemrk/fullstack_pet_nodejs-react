@@ -1,39 +1,33 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
-import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { User } from './users/entities/user.entity';
-import { UsersModule } from './users/users.module';
 import { SitesModule } from './sites/sites.module';
-import { Site } from './sites/entities/site.entity';
-import { Hoster } from './hosters/entities/hoster.entity';
-import { HostersService } from './hosters/hosters.service';
+import { UsersModule } from './users/users.module';
 import { HostersModule } from './hosters/hosters.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    AuthModule,
     UsersModule,
+    GraphQLModule.forRoot({
+      autoSchemaFile: 'schema.gql',
+      context: ({req}) => ({...req})
+      // context: ({ req }) => {
+      //   console.log(req.headers);
+      //   return ({ req });
+      // }
+    }),
     ConfigModule.forRoot({isGlobal: true}),
-    TypeOrmModule.forRoot(
-      {
-        type: "postgres",
-        host: process.env.POSTGRESQL_HOST,
-        port: parseInt(process.env.POSTGRESQL_PORT),
-        username: process.env.POSTGRESQL_USER,
-        password: process.env.POSTGRESQL_PASS,
-        database: process.env.POSTGRESQL_DB_NAME,
-        entities: [User, Site, Hoster ],
-        synchronize: true,
-      }
-    ),
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
     SitesModule,
-    HostersModule
+    HostersModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [HostersService],
+  providers: [],
   // exports:[ConfigModule]
 })
 export class AppModule implements NestModule {
@@ -42,6 +36,5 @@ export class AppModule implements NestModule {
       .apply(LoggerMiddleware)
       // .exclude({path: '/site/delete', method: RequestMethod.DELETE}) // for ignore path
       .forRoutes({ path: '*', method: RequestMethod.ALL })
-
   }
 }

@@ -1,0 +1,65 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SiteEntity {
+  id: ID!
+  domain: String!
+  holder: String!
+}
+
+type UserEntity {
+  id: ID!
+  username: String!
+  password: String!
+  role: String!
+}
+
+type Hoster {
+  id: ID!
+  name: String!
+  url: String!
+}
+
+type UserResponse {
+  errors: [String!]
+  user: UserEntity
+}
+
+type TokenResponse {
+  error: [String!]
+  token: String
+}
+
+type Query {
+  sites: [SiteEntity!]!
+  getSitesByHolder(holderId: String!): [SiteEntity!]!
+  users: [UserEntity!]!
+  findUserByName(name: String!): UserEntity!
+  hosters: [Hoster!]!
+  hoster(id: Int!): Hoster!
+  me: UserResponse!
+}
+
+type Mutation {
+  createSite(inputs: SiteInput!): SiteEntity!
+  createHoster(createHosterInput: HosterInput!): Hoster!
+  removeHoster(id: Int!): Hoster!
+  registration(input: UserInput!): TokenResponse!
+  login(input: UserInput!): TokenResponse!
+}
+
+input SiteInput {
+  domain: String!
+  holder: String!
+}
+
+input HosterInput {
+  name: String!
+  url: String!
+}
+
+input UserInput {
+  username: String!
+  password: String!
+}

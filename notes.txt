@@ -1,0 +1,7 @@
+https://github.com/vercel/swr
+
+https://www.npmjs.com/package/@nestjsx/crud-request
+https://habr.com/ru/post/462585/
+
+https://medium.com/@chnirt/how-do-i-practice-with-nestjs-nestjs-typeorm-mongodb-9e407818a296
+https://tkssharma.com/nestjs-with-typeORM-mongoose-and-mysql-for-api-development/
