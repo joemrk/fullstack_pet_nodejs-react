@@ -5,6 +5,7 @@ import Sites from "./pages/sites/Sites";
 import Layout, { Content } from 'antd/lib/layout/layout';
 import Navbar from './Components/Navbar';
 import AfterAuth from './pages/auth/AfterAuth';
+import Hosters from './pages/hosters/Hosters';
 
 export const useRoutes = (isAuth: boolean) => {
   if (isAuth) {
@@ -18,6 +19,11 @@ export const useRoutes = (isAuth: boolean) => {
                 <Route path="/sites" exact>
                   <Sites />
                 </Route>
+                <Route path="/hosters" exact>
+                  <Hosters />
+                </Route>
+
+
 
                 <Redirect to="/sites" />
               </Switch>

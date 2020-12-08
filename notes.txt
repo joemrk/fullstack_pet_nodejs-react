@@ -5,3 +5,57 @@ https://habr.com/ru/post/462585/
 
 https://medium.com/@chnirt/how-do-i-practice-with-nestjs-nestjs-typeorm-mongodb-9e407818a296
 https://tkssharma.com/nestjs-with-typeORM-mongoose-and-mysql-for-api-development/
+
+-------------------
+
+site list + random data
+
+=SITE
+=hoster:HOSTER
+domain:string
+campaign:CAMPAIGN
+=ftp: FTP
+panel:PANEL
+desc:string
+yandex:string
+=klo:KLO
+holder:string
+creator:string
+
+=HOSTER
+name:string
+=authData:AUTH_DATA
+=vds: VDS[]
+
+=AUTH_DATA
+link:string
+login:string
+pass:string
+
+=VDS
+name:string
+desc:string
+=ftp: FTP
+=ssh: SSH
+panel:PANEL
+
+=CAMPAIGN
+name:string
+country:string[]
+
+=FTP/SSH
+host:string
+user:string
+pass:string
+port::string
+
+=PANEL
+name:string
+=authData:AUTH_DATA
+
+=KLO
+name:string
+=authData:AUTH_DATA
+white:string
+black:string
+siteDetailsLink:string

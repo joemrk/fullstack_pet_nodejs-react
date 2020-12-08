@@ -1,4 +1,5 @@
 import {
+  FlagOutlined,
   GlobalOutlined,
   LogoutOutlined
 } from '@ant-design/icons';
@@ -26,6 +27,9 @@ const Navbar: React.FC = (props) => {
       <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} >
         <Menu.Item key="1" icon={<GlobalOutlined />}>
           <Link to="/sites">Sites</Link>
+        </Menu.Item>
+        <Menu.Item key="2" icon={<FlagOutlined />}>
+          <Link to="/hosters">Hosters</Link>
         </Menu.Item>
 
 

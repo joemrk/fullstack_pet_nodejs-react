@@ -19,7 +19,12 @@ export class AuthService {
       
       const newUser = await this.usersService.create(input)
       
-      if (newUser) return this.login(input)
+      if (newUser) {
+        const payload = { username: newUser.username, sub: newUser.id }
+        return {
+          token: this.jwtService.sign(payload),
+        }
+      }
 
     } catch (error) {
       return { error: ['Cant register', error.message] }

@@ -13,17 +13,17 @@ export class UsersService {
     @InjectConnection() private connection: Connection,
   ) { }
 
-  async create(user: UserInput): Promise<User> {    
+  async create(user: UserInput): Promise<UserEntity> {    
     const newUser = new this.userModel(user)
-    return await newUser.save()
+    return await newUser.save() as UserEntity
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userModel.find().exec()
+  async findAll(): Promise<UserEntity[]> {
+    return await this.userModel.find().exec() as UserEntity[]
   }
 
-  async findOne(id: string){
-    return await this.userModel.findById(id)
+  async findOne(id: string): Promise<UserEntity>{
+    return await this.userModel.findById(id) as UserEntity
   }
 
   async findByName(username: string): Promise<UserEntity> {
