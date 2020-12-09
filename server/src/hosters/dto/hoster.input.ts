@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { AuthDataInput } from './auth-data.input';
 
 @InputType()
 export class HosterInput {
@@ -6,7 +7,7 @@ export class HosterInput {
   @Field()
   name: string
 
-  @Field()
-  url: string
+  @Field(() => AuthDataInput)
+  authData: AuthDataInput
 
 }

@@ -1,4 +1,6 @@
 import { ObjectType, Field, ID } from "@nestjs/graphql"
+import { AuthDataInput } from '../dto/auth-data.input';
+import { AuthData } from '../dto/auth-data.dto';
 
 
 @ObjectType()
@@ -9,6 +11,6 @@ export class Hoster{
   @Field()
   name: string
 
-  @Field()
-  url: string
+  @Field(() => AuthData)
+  authData: AuthData
 }

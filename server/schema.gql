@@ -15,10 +15,16 @@ type UserEntity {
   role: String!
 }
 
+type AuthData {
+  link: String!
+  login: String!
+  password: String!
+}
+
 type Hoster {
   id: ID!
   name: String!
-  url: String!
+  authData: AuthData!
 }
 
 type UserResponse {
@@ -37,7 +43,7 @@ type Query {
   users: [UserEntity!]!
   findUserByName(name: String!): UserEntity!
   hosters: [Hoster!]!
-  hoster(id: Int!): Hoster!
+  hoster(id: String!): Hoster!
   me: UserResponse!
 }
 
@@ -56,7 +62,13 @@ input SiteInput {
 
 input HosterInput {
   name: String!
-  url: String!
+  authData: AuthDataInput!
+}
+
+input AuthDataInput {
+  link: String!
+  login: String!
+  password: String!
 }
 
 input UserInput {

@@ -13,12 +13,12 @@ export class HostersResolver {
   }
 
   @Query(() => [Hoster], { name: 'hosters' })
-  findAll() {
+  hosters() {
     return this.hostersService.findAll();
   }
 
   @Query(() => Hoster, { name: 'hoster' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  hoster(@Args('id', { type: () => String }) id: string) {
     return this.hostersService.findOne(id);
   }
 

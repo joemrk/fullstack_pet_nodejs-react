@@ -21,8 +21,9 @@ export class HostersService {
     return await this.hosterModel.find().exec()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hoster`;
+  async findOne(id: string) {
+    return await this.hosterModel.findById(id)
+    // return `This action returns a #${id} hoster`;
   }
 
   update(id: number, updateHosterInput: HosterInput) {
