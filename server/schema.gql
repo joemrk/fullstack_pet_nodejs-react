@@ -2,8 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AuthData {
+  link: String!
+  login: String!
+  password: String!
+}
+
+type HosterEntity {
+  id: ID!
+  name: String!
+  authData: AuthData!
+  sites: [SiteEntity!]!
+}
+
 type SiteEntity {
   id: ID!
+  domainProvider: HosterEntity!
+  hostProvider: HosterEntity!
   domain: String!
   holder: String!
 }
@@ -13,18 +28,6 @@ type UserEntity {
   username: String!
   password: String!
   role: String!
-}
-
-type AuthData {
-  link: String!
-  login: String!
-  password: String!
-}
-
-type Hoster {
-  id: ID!
-  name: String!
-  authData: AuthData!
 }
 
 type UserResponse {
@@ -42,20 +45,22 @@ type Query {
   getSitesByHolder(holderId: String!): [SiteEntity!]!
   users: [UserEntity!]!
   findUserByName(name: String!): UserEntity!
-  hosters: [Hoster!]!
-  hoster(id: String!): Hoster!
+  hosters: [HosterEntity!]!
+  hoster(id: String!): HosterEntity!
   me: UserResponse!
 }
 
 type Mutation {
   createSite(inputs: SiteInput!): SiteEntity!
-  createHoster(createHosterInput: HosterInput!): Hoster!
-  removeHoster(id: Int!): Hoster!
+  createHoster(createHosterInput: HosterInput!): HosterEntity!
+  removeHoster(id: Int!): HosterEntity!
   registration(input: UserInput!): TokenResponse!
   login(input: UserInput!): TokenResponse!
 }
 
 input SiteInput {
+  domainProvider: String!
+  hostProvider: String!
   domain: String!
   holder: String!
 }

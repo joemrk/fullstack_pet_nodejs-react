@@ -18,7 +18,8 @@ export class HostersService {
   }
 
   async findAll() {
-    return await this.hosterModel.find().exec()
+    return await this.hosterModel.find().populate('sites').exec()
+    // return await this.hosterModel.find().exec()
   }
 
   async findOne(id: string) {
