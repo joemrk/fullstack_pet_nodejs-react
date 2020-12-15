@@ -1,0 +1,5 @@
+fragment RegularAuthData on AuthData{
+  link
+  login
+  password
+}

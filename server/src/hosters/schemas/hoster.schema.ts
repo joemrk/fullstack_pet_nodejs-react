@@ -11,11 +11,13 @@ export class Hoster {
   name: string
 
   @Prop()
-  siteLink:string
+  siteLink: string
 
   @Prop({ type: AuthDataInput })
   authData: AuthDataInput
 
+  @Prop({default: 0})
+  sitesCount: number
 }
 
 export const HosterSchema = SchemaFactory.createForClass(Hoster)

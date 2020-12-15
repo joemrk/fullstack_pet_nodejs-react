@@ -1,0 +1,11 @@
+mutation CreateHoster($createHosterInput: HosterInput!){
+  createHoster(createHosterInput:$createHosterInput){
+    id
+    name
+		authData{
+      link
+      login
+      password
+    }
+  }
+}

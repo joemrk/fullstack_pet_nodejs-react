@@ -1,7 +1,15 @@
 query Sites {
-  sites {
+  sites{
     id
+    domainProviderId
+    domainProviderName
+    hostProviderId
+    hostProviderName
     domain
-    holder
+    dedicatedIp
+    yandexId
+    holderId
+    holderName
+    createdAt
   }
 }

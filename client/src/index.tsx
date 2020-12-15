@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import 'antd/dist/antd.min.css'
+// import 'antd/dist/antd.min.css'
+import 'antd/dist/antd.dark.css'
 import 'antd/dist/antd.min.js'
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';

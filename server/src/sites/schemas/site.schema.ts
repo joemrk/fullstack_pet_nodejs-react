@@ -20,6 +20,12 @@ export class Site{
   @Prop()
   domain: string
 
+  @Prop()
+  dedicatedIp: string
+
+  @Prop()
+  yandexId: string
+
   @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User'})
   holderId: MongoSchema.Types.ObjectId
 
@@ -28,6 +34,7 @@ export class Site{
 
   @Prop({ default: Date.now })
   createdAt: Date;
+
 }
 
 export const SiteSchema = SchemaFactory.createForClass(Site)

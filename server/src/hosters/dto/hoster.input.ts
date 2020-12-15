@@ -5,9 +5,12 @@ import { AuthDataInput } from './auth-data.input';
 export class HosterInput {
 
   @Field()
-  name: string
+  readonly name: string
+
+  @Field()
+  readonly siteLink: string
 
   @Field(() => AuthDataInput)
-  authData: AuthDataInput
+  readonly authData: AuthDataInput
 
 }

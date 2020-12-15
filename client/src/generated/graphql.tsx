@@ -11,14 +11,25 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: any;
 };
 
 export type SiteEntity = {
   __typename?: 'SiteEntity';
   id: Scalars['ID'];
+  domainProviderId: Scalars['ID'];
+  domainProviderName: Scalars['String'];
+  hostProviderId: Scalars['ID'];
+  hostProviderName: Scalars['String'];
   domain: Scalars['String'];
-  holder: Scalars['String'];
+  dedicatedIp: Scalars['String'];
+  yandexId: Scalars['String'];
+  holderId: Scalars['ID'];
+  holderName: Scalars['String'];
+  createdAt: Scalars['DateTime'];
 };
+
 
 export type UserEntity = {
   __typename?: 'UserEntity';
@@ -28,11 +39,20 @@ export type UserEntity = {
   role: Scalars['String'];
 };
 
-export type Hoster = {
-  __typename?: 'Hoster';
+export type AuthData = {
+  __typename?: 'AuthData';
+  link: Scalars['String'];
+  login: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type HosterEntity = {
+  __typename?: 'HosterEntity';
   id: Scalars['ID'];
   name: Scalars['String'];
-  url: Scalars['String'];
+  siteLink: Scalars['String'];
+  authData: AuthData;
+  sitesCount: Scalars['Int'];
 };
 
 export type UserResponse = {
@@ -53,8 +73,8 @@ export type Query = {
   getSitesByHolder: Array<SiteEntity>;
   users: Array<UserEntity>;
   findUserByName: UserEntity;
-  hosters: Array<Hoster>;
-  hoster: Hoster;
+  hosters: Array<HosterEntity>;
+  hoster: HosterEntity;
   me: UserResponse;
 };
 
@@ -70,14 +90,14 @@ export type QueryFindUserByNameArgs = {
 
 
 export type QueryHosterArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   createSite: SiteEntity;
-  createHoster: Hoster;
-  removeHoster: Hoster;
+  createHoster: HosterEntity;
+  removeHoster: HosterEntity;
   registration: TokenResponse;
   login: TokenResponse;
 };
@@ -108,19 +128,33 @@ export type MutationLoginArgs = {
 };
 
 export type SiteInput = {
+  domainProvider: Scalars['String'];
+  hostProvider: Scalars['String'];
   domain: Scalars['String'];
   holder: Scalars['String'];
 };
 
 export type HosterInput = {
   name: Scalars['String'];
-  url: Scalars['String'];
+  siteLink: Scalars['String'];
+  authData: AuthDataInput;
+};
+
+export type AuthDataInput = {
+  link: Scalars['String'];
+  login: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type UserInput = {
   username: Scalars['String'];
   password: Scalars['String'];
 };
+
+export type RegularAuthDataFragment = (
+  { __typename?: 'AuthData' }
+  & Pick<AuthData, 'link' | 'login' | 'password'>
+);
 
 export type RegularTokenResponseFragment = (
   { __typename?: 'TokenResponse' }
@@ -139,6 +173,23 @@ export type RegularUserResponseFragment = (
     { __typename?: 'UserEntity' }
     & RegularUserFragment
   )> }
+);
+
+export type CreateHosterMutationVariables = Exact<{
+  createHosterInput: HosterInput;
+}>;
+
+
+export type CreateHosterMutation = (
+  { __typename?: 'Mutation' }
+  & { createHoster: (
+    { __typename?: 'HosterEntity' }
+    & Pick<HosterEntity, 'id' | 'name'>
+    & { authData: (
+      { __typename?: 'AuthData' }
+      & Pick<AuthData, 'link' | 'login' | 'password'>
+    ) }
+  ) }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -167,6 +218,21 @@ export type RegisterMutation = (
   ) }
 );
 
+export type HostersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HostersQuery = (
+  { __typename?: 'Query' }
+  & { hosters: Array<(
+    { __typename?: 'HosterEntity' }
+    & Pick<HosterEntity, 'id' | 'name' | 'siteLink' | 'sitesCount'>
+    & { authData: (
+      { __typename?: 'AuthData' }
+      & RegularAuthDataFragment
+    ) }
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -185,7 +251,7 @@ export type SitesQuery = (
   { __typename?: 'Query' }
   & { sites: Array<(
     { __typename?: 'SiteEntity' }
-    & Pick<SiteEntity, 'id' | 'domain' | 'holder'>
+    & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'domain' | 'dedicatedIp' | 'yandexId' | 'holderId' | 'holderName' | 'createdAt'>
   )> }
 );
 
@@ -200,6 +266,13 @@ export type UsersQuery = (
   )> }
 );
 
+export const RegularAuthDataFragmentDoc = gql`
+    fragment RegularAuthData on AuthData {
+  link
+  login
+  password
+}
+    `;
 export const RegularTokenResponseFragmentDoc = gql`
     fragment RegularTokenResponse on TokenResponse {
   error
@@ -221,6 +294,44 @@ export const RegularUserResponseFragmentDoc = gql`
   }
 }
     ${RegularUserFragmentDoc}`;
+export const CreateHosterDocument = gql`
+    mutation CreateHoster($createHosterInput: HosterInput!) {
+  createHoster(createHosterInput: $createHosterInput) {
+    id
+    name
+    authData {
+      link
+      login
+      password
+    }
+  }
+}
+    `;
+export type CreateHosterMutationFn = Apollo.MutationFunction<CreateHosterMutation, CreateHosterMutationVariables>;
+
+/**
+ * __useCreateHosterMutation__
+ *
+ * To run a mutation, you first call `useCreateHosterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateHosterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createHosterMutation, { data, loading, error }] = useCreateHosterMutation({
+ *   variables: {
+ *      createHosterInput: // value for 'createHosterInput'
+ *   },
+ * });
+ */
+export function useCreateHosterMutation(baseOptions?: Apollo.MutationHookOptions<CreateHosterMutation, CreateHosterMutationVariables>) {
+        return Apollo.useMutation<CreateHosterMutation, CreateHosterMutationVariables>(CreateHosterDocument, baseOptions);
+      }
+export type CreateHosterMutationHookResult = ReturnType<typeof useCreateHosterMutation>;
+export type CreateHosterMutationResult = Apollo.MutationResult<CreateHosterMutation>;
+export type CreateHosterMutationOptions = Apollo.BaseMutationOptions<CreateHosterMutation, CreateHosterMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($input: UserInput!) {
   login(input: $input) {
@@ -285,6 +396,44 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const HostersDocument = gql`
+    query Hosters {
+  hosters {
+    id
+    name
+    siteLink
+    sitesCount
+    authData {
+      ...RegularAuthData
+    }
+  }
+}
+    ${RegularAuthDataFragmentDoc}`;
+
+/**
+ * __useHostersQuery__
+ *
+ * To run a query within a React component, call `useHostersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHostersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHostersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHostersQuery(baseOptions?: Apollo.QueryHookOptions<HostersQuery, HostersQueryVariables>) {
+        return Apollo.useQuery<HostersQuery, HostersQueryVariables>(HostersDocument, baseOptions);
+      }
+export function useHostersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HostersQuery, HostersQueryVariables>) {
+          return Apollo.useLazyQuery<HostersQuery, HostersQueryVariables>(HostersDocument, baseOptions);
+        }
+export type HostersQueryHookResult = ReturnType<typeof useHostersQuery>;
+export type HostersLazyQueryHookResult = ReturnType<typeof useHostersLazyQuery>;
+export type HostersQueryResult = Apollo.QueryResult<HostersQuery, HostersQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -321,8 +470,16 @@ export const SitesDocument = gql`
     query Sites {
   sites {
     id
+    domainProviderId
+    domainProviderName
+    hostProviderId
+    hostProviderName
     domain
-    holder
+    dedicatedIp
+    yandexId
+    holderId
+    holderName
+    createdAt
   }
 }
     `;

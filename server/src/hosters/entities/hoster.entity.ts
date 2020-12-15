@@ -1,21 +1,22 @@
-import { ObjectType, Field, ID } from "@nestjs/graphql"
-import { AuthDataInput } from '../dto/auth-data.input';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { AuthData } from '../dto/auth-data.dto';
-import { SiteEntity } from '../../sites/entities/site.entity';
 
 
 @ObjectType()
-export class HosterEntity{
+export class HosterEntity {
   @Field(() => ID)
-  id: string
+  readonly id: string
 
   @Field()
-  name: string
+  readonly name: string
+
+  @Field()
+  readonly siteLink: string
 
   @Field(() => AuthData)
-  authData: AuthData
+  readonly authData: AuthData
 
-  @Field(() =>[SiteEntity])
-  sites: SiteEntity[]
+  @Field(() => Int)
+  readonly sitesCount: number
 
 }

@@ -6,6 +6,7 @@ import Layout, { Content } from 'antd/lib/layout/layout';
 import Navbar from './Components/Navbar';
 import AfterAuth from './pages/auth/AfterAuth';
 import Hosters from './pages/hosters/Hosters';
+import CreateHoster from "./pages/hosters/CreateHoster";
 
 export const useRoutes = (isAuth: boolean) => {
   if (isAuth) {
@@ -21,6 +22,9 @@ export const useRoutes = (isAuth: boolean) => {
                 </Route>
                 <Route path="/hosters" exact>
                   <Hosters />
+                </Route>
+                <Route path="/hosters/create" exact>
+                  <CreateHoster />
                 </Route>
 
 

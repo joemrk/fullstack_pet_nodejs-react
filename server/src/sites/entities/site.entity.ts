@@ -1,20 +1,37 @@
-import { ObjectType, Field, ID } from "@nestjs/graphql"
-import { HosterEntity } from '../../hosters/entities/hoster.entity';
+import { Field, ID, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class SiteEntity {
   @Field(() => ID)
   id: string
 
-  @Field(()=>HosterEntity)
-  domainProvider: HosterEntity
+  @Field(() => ID)
+  domainProviderId: string
 
-  @Field(()=>HosterEntity)
-  hostProvider: HosterEntity
+  @Field()
+  domainProviderName: string
+
+  @Field(() => ID)
+  hostProviderId: string
+
+  @Field()
+  hostProviderName: string
 
   @Field()
   domain: string
 
   @Field()
-  holder: string
+  dedicatedIp: string
+
+  @Field()
+  yandexId: string
+
+  @Field(() => ID)
+  holderId: string
+
+  @Field()
+  holderName: string
+
+  @Field(() => Date)
+  createdAt: Date;
 }
