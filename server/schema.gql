@@ -52,6 +52,13 @@ type TokenResponse {
   token: String
 }
 
+type Campaign {
+  id: ID!
+  countryCode: String!
+  campaignName: String!
+  fullCampaignName: String!
+}
+
 type Query {
   sites: [SiteEntity!]!
   getSitesByHolder(holderId: String!): [SiteEntity!]!
@@ -60,6 +67,8 @@ type Query {
   hosters: [HosterEntity!]!
   hoster(id: String!): HosterEntity!
   me: UserResponse!
+  campaigns: [Campaign!]!
+  campaign(id: String!): Campaign!
 }
 
 type Mutation {
@@ -68,6 +77,7 @@ type Mutation {
   removeHoster(id: Int!): HosterEntity!
   registration(input: UserInput!): TokenResponse!
   login(input: UserInput!): TokenResponse!
+  createCampaign(campaignInput: CampaignInput!): Campaign!
 }
 
 input SiteInput {
@@ -97,4 +107,9 @@ input AuthDataInput {
 input UserInput {
   username: String!
   password: String!
+}
+
+input CampaignInput {
+  countryCode: String!
+  campaignName: String!
 }

@@ -8,6 +8,8 @@ import { SitesModule } from './sites/sites.module';
 import { UsersModule } from './users/users.module';
 import { HostersModule } from './hosters/hosters.module';
 import { AuthModule } from './auth/auth.module';
+import { CampaignsResolver } from './campaigns/campaigns.resolver';
+import { CampaignsModule } from './campaigns/campaigns.module';
 
 @Module({
   imports: [
@@ -24,10 +26,10 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
     SitesModule,
     HostersModule,
-    AuthModule
+    AuthModule,
+    CampaignsModule
   ],
   controllers: [AppController],
-  providers: [],
   // exports:[ConfigModule]
 })
 export class AppModule implements NestModule {
