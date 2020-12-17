@@ -8,12 +8,16 @@ import Sider from 'antd/lib/layout/Sider';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { useMeQuery } from '../generated/graphql';
 
 
 
 
 const Navbar: React.FC = (props) => {
   const ctx = useContext(AuthContext)
+  const { data, loading } = useMeQuery()
+  if (!data?.me.user) ctx.logoutContext()
+
 
   return (
     <Sider

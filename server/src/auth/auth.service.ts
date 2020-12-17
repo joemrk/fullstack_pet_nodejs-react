@@ -47,7 +47,7 @@ export class AuthService {
 
   async me(token: string): Promise<UserResponse> {
     try {
-      const decodeToken = this.jwtService.decode(token)
+      const decodeToken = this.jwtService.decode(token)      
       const user = await this.usersService.findOne(decodeToken.sub)
       return { user }
     } catch (error) {
