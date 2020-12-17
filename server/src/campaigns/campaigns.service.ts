@@ -14,9 +14,9 @@ export class CampaignsService {
 
   async create(campaignInput: CampaignInput) {
     const newCampaign = new this.campaignModel({
-      countryCode: campaignInput.countryCode,
+      langue: campaignInput.langue,
       campaignName: campaignInput.campaignName,
-      fullCampaignName: `${campaignInput.countryCode} - ${campaignInput.campaignName}`
+      fullCampaignName: `${campaignInput.langue} - ${campaignInput.campaignName}`
     })
     return await newCampaign.save()
   }

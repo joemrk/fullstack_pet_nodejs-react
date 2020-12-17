@@ -3,7 +3,7 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 @InputType()
 export class CampaignInput {
   @Field()
-  countryCode: string
+  langue: string
 
   @Field()
   campaignName: string

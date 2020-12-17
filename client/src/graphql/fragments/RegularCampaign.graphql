@@ -1,0 +1,6 @@
+fragment RegularCampaign on Campaign {
+  id
+  langue
+  campaignName
+  fullCampaignName
+}

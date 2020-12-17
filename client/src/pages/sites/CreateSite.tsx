@@ -2,7 +2,7 @@ import React from 'react'
 import Layout from 'antd/lib/layout/layout';
 import { Formik } from 'formik';
 import { Button, Form, Input, Select, Space, Typography } from 'antd';
-import { useHostersQuery, useCreateHosterMutation, useCreateSiteMutation } from '../../generated/graphql';
+import { useHostersQuery, useCreateHosterMutation, useCreateSiteMutation, useCampaignsQuery } from '../../generated/graphql';
 import { AnyAaaaRecord } from 'dns';
 
 
@@ -27,15 +27,20 @@ const selectSearchProps = {
 
 
 const CreateSite: React.FC = (props) => {
-  const { data, loading } = useHostersQuery()
+  const { data:hostersData , loading:hostersLoading } = useHostersQuery()
+  const {data:campaignData, loading:campaignLoading} = useCampaignsQuery()
   const [createSite] = useCreateSiteMutation()
 
 
 
-  if (loading) return <div>Loading...</div>
+  if (hostersLoading && campaignLoading) return <div>Loading...</div>
 
-  const hosterSelect = data?.hosters ? data?.hosters.map(h => (
+  const hosterSelect = hostersData?.hosters ? hostersData?.hosters.map(h => (
     <Select.Option value={h.id}>{h.name}</Select.Option>
+  )) : []
+
+  const campaignSelect = campaignData?.campaigns ? campaignData?.campaigns.map(h => (
+    <Select.Option value={h.id}>{h.fullCampaignName}</Select.Option>
   )) : []
 
 
@@ -46,6 +51,8 @@ const CreateSite: React.FC = (props) => {
         domainProviderName: '',
         hostProviderId: '',
         hostProviderName: '',
+        campaignId: '',
+        campaignName: '',
         domain: '',
         dedicatedIp: '',
         yandexId: '',
@@ -54,10 +61,10 @@ const CreateSite: React.FC = (props) => {
       }}
       onSubmit={async (values) => {
         console.log(values);
-        const data  = await createSite({
-          variables:{
-            inputs:values
-        }})
+        // const data  = await createSite({
+        //   variables:{
+        //     inputs:values
+        // }})
 
       }}
     >{({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (
@@ -93,6 +100,19 @@ const CreateSite: React.FC = (props) => {
               {hosterSelect}
             </Select>
           </Form.Item>
+          <Form.Item
+            name="campaign"
+            label="Campaign">
+            <Select
+              {...selectSearchProps}
+              onChange={(_, o:any) => {
+                values.campaignId = o.value
+                values.campaignName = o.children
+              }}
+            >
+              {campaignSelect}
+            </Select>
+          </Form.Item>
 
 
           <Form.Item
@@ -101,7 +121,6 @@ const CreateSite: React.FC = (props) => {
           >
             <Input
               value={values.domain}
-              placeholder="Domain"
               onChange={handleChange}
             />
           </Form.Item>
@@ -111,7 +130,6 @@ const CreateSite: React.FC = (props) => {
           >
             <Input
               value={values.dedicatedIp}
-              placeholder="IP"
               onChange={handleChange}
             />
           </Form.Item>
@@ -121,7 +139,6 @@ const CreateSite: React.FC = (props) => {
           >
             <Input
               value={values.yandexId}
-              placeholder="ID"
               onChange={handleChange}
             />
           </Form.Item>

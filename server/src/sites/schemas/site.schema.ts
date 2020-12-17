@@ -9,13 +9,19 @@ export class Site{
   domainProviderId: MongoSchema.Types.ObjectId
   
   @Prop()
-  domainProviderName: MongoSchema.Types.ObjectId
+  domainProviderName:string
   
   @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster'})
   hostProviderId: MongoSchema.Types.ObjectId
   
   @Prop()
-  hostProviderName: MongoSchema.Types.ObjectId
+  hostProviderName: string
+
+  @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster'})
+  campaignId: MongoSchema.Types.ObjectId
+  
+  @Prop()
+  campaignName: string
 
   @Prop()
   domain: string

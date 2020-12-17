@@ -17,6 +17,12 @@ export class SiteEntity {
   @Field()
   readonly hostProviderName: string
 
+  @Field(() => ID)
+  readonly campaignId: string
+
+  @Field()
+  readonly campaignName: string
+
   @Field()
   readonly domain: string
 

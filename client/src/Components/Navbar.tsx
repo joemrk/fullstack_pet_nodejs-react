@@ -1,7 +1,8 @@
 import {
   FlagOutlined,
   GlobalOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  BankOutlined
 } from '@ant-design/icons';
 import { Button, Menu } from 'antd';
 import Sider from 'antd/lib/layout/Sider';
@@ -34,6 +35,9 @@ const Navbar: React.FC = (props) => {
         </Menu.Item>
         <Menu.Item key="2" icon={<FlagOutlined />}>
           <Link to="/hosters">Hosters</Link>
+        </Menu.Item>
+        <Menu.Item key="3" icon={<BankOutlined />}>
+          <Link to="/campaigns">Campaigns</Link>
         </Menu.Item>
 
 

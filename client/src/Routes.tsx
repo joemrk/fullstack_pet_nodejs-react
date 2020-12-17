@@ -8,6 +8,8 @@ import AfterAuth from './pages/auth/AfterAuth';
 import Hosters from './pages/hosters/Hosters';
 import CreateHoster from "./pages/hosters/CreateHoster";
 import CreateSite from "./pages/sites/CreateSite";
+import Campaigns from "./pages/campaigns/Campaigns";
+import CreateCampaign from "./pages/campaigns/CreateCampaign";
 
 export const useRoutes = (isAuth: boolean) => {
   if (isAuth) {
@@ -21,15 +23,24 @@ export const useRoutes = (isAuth: boolean) => {
                 <Route path="/sites" exact>
                   <Sites />
                 </Route>
+                <Route path="/sites/create" exact>
+                  <CreateSite />
+                </Route>
                 <Route path="/hosters" exact>
                   <Hosters />
                 </Route>
                 <Route path="/hosters/create" exact>
                   <CreateHoster />
                 </Route>
-                <Route path="/sites/create" exact>
-                  <CreateSite />
+                <Route path="/campaigns" exact>
+                  <Campaigns />
                 </Route>
+                <Route path="/campaigns/create" exact>
+                  <CreateCampaign />
+                </Route>
+
+
+                
 
 
                 <Redirect to="/sites" />

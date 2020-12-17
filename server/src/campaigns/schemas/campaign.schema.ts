@@ -7,7 +7,7 @@ export type CampaignDocument = Campaign & Document
 @Schema()
 export class Campaign {
   @Prop()
-  countryCode: string
+  langue: string
 
   @Prop()
   campaignName: string

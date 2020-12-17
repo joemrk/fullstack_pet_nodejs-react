@@ -22,6 +22,8 @@ export type SiteEntity = {
   domainProviderName: Scalars['String'];
   hostProviderId: Scalars['ID'];
   hostProviderName: Scalars['String'];
+  campaignId: Scalars['ID'];
+  campaignName: Scalars['String'];
   domain: Scalars['String'];
   dedicatedIp: Scalars['String'];
   yandexId: Scalars['String'];
@@ -67,6 +69,14 @@ export type TokenResponse = {
   token?: Maybe<Scalars['String']>;
 };
 
+export type Campaign = {
+  __typename?: 'Campaign';
+  id: Scalars['ID'];
+  langue: Scalars['String'];
+  campaignName: Scalars['String'];
+  fullCampaignName: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   sites: Array<SiteEntity>;
@@ -76,6 +86,8 @@ export type Query = {
   hosters: Array<HosterEntity>;
   hoster: HosterEntity;
   me: UserResponse;
+  campaigns: Array<Campaign>;
+  campaign: Campaign;
 };
 
 
@@ -93,6 +105,11 @@ export type QueryHosterArgs = {
   id: Scalars['String'];
 };
 
+
+export type QueryCampaignArgs = {
+  id: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createSite: SiteEntity;
@@ -100,6 +117,7 @@ export type Mutation = {
   removeHoster: HosterEntity;
   registration: TokenResponse;
   login: TokenResponse;
+  createCampaign: Campaign;
 };
 
 
@@ -127,11 +145,18 @@ export type MutationLoginArgs = {
   input: UserInput;
 };
 
+
+export type MutationCreateCampaignArgs = {
+  campaignInput: CampaignInput;
+};
+
 export type SiteInput = {
   domainProviderId: Scalars['ID'];
   domainProviderName: Scalars['String'];
   hostProviderId: Scalars['ID'];
   hostProviderName: Scalars['String'];
+  campaignId: Scalars['ID'];
+  campaignName: Scalars['String'];
   domain: Scalars['String'];
   dedicatedIp: Scalars['String'];
   yandexId: Scalars['String'];
@@ -156,9 +181,19 @@ export type UserInput = {
   password: Scalars['String'];
 };
 
+export type CampaignInput = {
+  langue: Scalars['String'];
+  campaignName: Scalars['String'];
+};
+
 export type RegularAuthDataFragment = (
   { __typename?: 'AuthData' }
   & Pick<AuthData, 'link' | 'login' | 'password'>
+);
+
+export type RegularCampaignFragment = (
+  { __typename?: 'Campaign' }
+  & Pick<Campaign, 'id' | 'langue' | 'campaignName' | 'fullCampaignName'>
 );
 
 export type RegularTokenResponseFragment = (
@@ -178,6 +213,19 @@ export type RegularUserResponseFragment = (
     { __typename?: 'UserEntity' }
     & RegularUserFragment
   )> }
+);
+
+export type CreateCampaignMutationVariables = Exact<{
+  input: CampaignInput;
+}>;
+
+
+export type CreateCampaignMutation = (
+  { __typename?: 'Mutation' }
+  & { createCampaign: (
+    { __typename?: 'Campaign' }
+    & RegularCampaignFragment
+  ) }
 );
 
 export type CreateHosterMutationVariables = Exact<{
@@ -236,6 +284,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type CampaignsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CampaignsQuery = (
+  { __typename?: 'Query' }
+  & { campaigns: Array<(
+    { __typename?: 'Campaign' }
+    & RegularCampaignFragment
+  )> }
+);
+
 export type HostersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -291,6 +350,14 @@ export const RegularAuthDataFragmentDoc = gql`
   password
 }
     `;
+export const RegularCampaignFragmentDoc = gql`
+    fragment RegularCampaign on Campaign {
+  id
+  langue
+  campaignName
+  fullCampaignName
+}
+    `;
 export const RegularTokenResponseFragmentDoc = gql`
     fragment RegularTokenResponse on TokenResponse {
   error
@@ -312,6 +379,38 @@ export const RegularUserResponseFragmentDoc = gql`
   }
 }
     ${RegularUserFragmentDoc}`;
+export const CreateCampaignDocument = gql`
+    mutation CreateCampaign($input: CampaignInput!) {
+  createCampaign(campaignInput: $input) {
+    ...RegularCampaign
+  }
+}
+    ${RegularCampaignFragmentDoc}`;
+export type CreateCampaignMutationFn = Apollo.MutationFunction<CreateCampaignMutation, CreateCampaignMutationVariables>;
+
+/**
+ * __useCreateCampaignMutation__
+ *
+ * To run a mutation, you first call `useCreateCampaignMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCampaignMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCampaignMutation, { data, loading, error }] = useCreateCampaignMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCampaignMutation(baseOptions?: Apollo.MutationHookOptions<CreateCampaignMutation, CreateCampaignMutationVariables>) {
+        return Apollo.useMutation<CreateCampaignMutation, CreateCampaignMutationVariables>(CreateCampaignDocument, baseOptions);
+      }
+export type CreateCampaignMutationHookResult = ReturnType<typeof useCreateCampaignMutation>;
+export type CreateCampaignMutationResult = Apollo.MutationResult<CreateCampaignMutation>;
+export type CreateCampaignMutationOptions = Apollo.BaseMutationOptions<CreateCampaignMutation, CreateCampaignMutationVariables>;
 export const CreateHosterDocument = gql`
     mutation CreateHoster($createHosterInput: HosterInput!) {
   createHoster(createHosterInput: $createHosterInput) {
@@ -456,6 +555,38 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const CampaignsDocument = gql`
+    query Campaigns {
+  campaigns {
+    ...RegularCampaign
+  }
+}
+    ${RegularCampaignFragmentDoc}`;
+
+/**
+ * __useCampaignsQuery__
+ *
+ * To run a query within a React component, call `useCampaignsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCampaignsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCampaignsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCampaignsQuery(baseOptions?: Apollo.QueryHookOptions<CampaignsQuery, CampaignsQueryVariables>) {
+        return Apollo.useQuery<CampaignsQuery, CampaignsQueryVariables>(CampaignsDocument, baseOptions);
+      }
+export function useCampaignsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CampaignsQuery, CampaignsQueryVariables>) {
+          return Apollo.useLazyQuery<CampaignsQuery, CampaignsQueryVariables>(CampaignsDocument, baseOptions);
+        }
+export type CampaignsQueryHookResult = ReturnType<typeof useCampaignsQuery>;
+export type CampaignsLazyQueryHookResult = ReturnType<typeof useCampaignsLazyQuery>;
+export type CampaignsQueryResult = Apollo.QueryResult<CampaignsQuery, CampaignsQueryVariables>;
 export const HostersDocument = gql`
     query Hosters {
   hosters {

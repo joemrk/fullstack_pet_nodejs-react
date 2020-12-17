@@ -3,30 +3,36 @@ import { InputType, Field, ID } from "@nestjs/graphql"
 @InputType()
 export class SiteInput {
   @Field(() => ID)
-  domainProviderId: string
+  readonly domainProviderId: string
 
   @Field()
-  domainProviderName: string
+  readonly domainProviderName: string
 
   @Field(() => ID)
-  hostProviderId: string
+  readonly hostProviderId: string
 
   @Field()
-  hostProviderName: string
-
-  @Field()
-  domain: string
-
-  @Field()
-  dedicatedIp: string
-
-  @Field()
-  yandexId: string
+  readonly hostProviderName: string
 
   @Field(() => ID)
-  holderId: string
+  readonly campaignId: string
 
   @Field()
-  holderName: string
+  readonly campaignName: string
+
+  @Field()
+  readonly domain: string
+
+  @Field()
+  readonly dedicatedIp: string
+
+  @Field()
+  readonly yandexId: string
+
+  @Field(() => ID)
+  readonly holderId: string
+
+  @Field()
+  readonly holderName: string
 
 }

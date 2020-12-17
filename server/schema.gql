@@ -8,6 +8,8 @@ type SiteEntity {
   domainProviderName: String!
   hostProviderId: ID!
   hostProviderName: String!
+  campaignId: ID!
+  campaignName: String!
   domain: String!
   dedicatedIp: String!
   yandexId: String!
@@ -54,7 +56,7 @@ type TokenResponse {
 
 type Campaign {
   id: ID!
-  countryCode: String!
+  langue: String!
   campaignName: String!
   fullCampaignName: String!
 }
@@ -85,6 +87,8 @@ input SiteInput {
   domainProviderName: String!
   hostProviderId: ID!
   hostProviderName: String!
+  campaignId: ID!
+  campaignName: String!
   domain: String!
   dedicatedIp: String!
   yandexId: String!
@@ -110,6 +114,6 @@ input UserInput {
 }
 
 input CampaignInput {
-  countryCode: String!
+  langue: String!
   campaignName: String!
 }

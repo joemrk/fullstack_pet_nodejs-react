@@ -6,7 +6,7 @@ export class Campaign {
   id: string;
 
   @Field()
-  countryCode: string
+  langue: string
 
   @Field()
   campaignName: string
