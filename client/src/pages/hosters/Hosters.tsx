@@ -11,7 +11,7 @@ const columns = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (_:any, record:HosterEntity) => (<a href={record.siteLink} target="_blank">{record.name}</a>)
+    render: (_: any, record: HosterEntity) => (<a href={record.siteLink} target="_blank">{record.name}</a>)
   },
 
   {
@@ -24,13 +24,13 @@ const columns = [
     title: 'Auth data',
     dataIndex: 'sitesCount',
     key: 'sitesCount',
-    render: (_:any,record: HosterEntity) => <a>Show</a>
+    render: (_: any, record: HosterEntity) => <a>Show</a>
   },
 
   {
     title: 'Action',
     key: 'x',
-    render: (_:any, record: HosterEntity) => (
+    render: (_: any, record: HosterEntity) => (
       <Space size="middle">
         <a>Edit</a>
         <a href={`/sites?byHoster=${record.id}`}>Sites</a>
@@ -51,28 +51,26 @@ const Hosters: React.FC = ({ }) => {
 
 
 
-  if(loading) return <div>Loading...</div>
+  if (loading) return <div>Loading...</div>
   return (
     <Layout>
       <div>
-
-      <Button 
-      type="primary"
-       size={'large'}
-      onClick={()=>{history.push('/hosters/create')}}
-       >
-          Create
+        <Button
+          type="primary"
+          size={'large'}
+          onClick={() => { history.push('/hosters/create') }}
+        > Create
         </Button>
       </div>
-        <br />
+      <br />
 
-    <Table
-      dataSource={data?.hosters}
-      columns={columns} />
+      <Table
+        dataSource={data?.hosters}
+        columns={columns} />
 
 
 
-  </Layout>
+    </Layout>
   );
 }
 export default Hosters

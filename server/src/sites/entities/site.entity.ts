@@ -3,35 +3,35 @@ import { Field, ID, ObjectType } from "@nestjs/graphql";
 @ObjectType()
 export class SiteEntity {
   @Field(() => ID)
-  id: string
+  readonly id: string
 
   @Field(() => ID)
-  domainProviderId: string
+  readonly domainProviderId: string
 
   @Field()
-  domainProviderName: string
+  readonly domainProviderName: string
 
   @Field(() => ID)
-  hostProviderId: string
+  readonly hostProviderId: string
 
   @Field()
-  hostProviderName: string
+  readonly hostProviderName: string
 
   @Field()
-  domain: string
+  readonly domain: string
 
   @Field()
-  dedicatedIp: string
+  readonly dedicatedIp: string
 
   @Field()
-  yandexId: string
+  readonly yandexId: string
 
   @Field(() => ID)
-  holderId: string
+  readonly holderId: string
 
   @Field()
-  holderName: string
+  readonly holderName: string
 
   @Field(() => Date)
-  createdAt: Date;
+  readonly createdAt: Date;
 }

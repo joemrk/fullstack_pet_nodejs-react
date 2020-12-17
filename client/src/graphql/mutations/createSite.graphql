@@ -1,0 +1,19 @@
+mutation CreateSite($inputs: SiteInput!){
+  createSite(inputs:$inputs){
+    id
+    domainProviderId
+    domainProviderName
+    hostProviderId
+    hostProviderName
+    
+    domain
+    
+    dedicatedIp
+    yandexId
+    
+    holderId
+    holderName
+    
+    createdAt
+  }
+}

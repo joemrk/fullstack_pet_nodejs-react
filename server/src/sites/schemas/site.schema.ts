@@ -26,10 +26,10 @@ export class Site{
   @Prop()
   yandexId: string
 
-  @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User'})
+  @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User', default: ''})
   holderId: MongoSchema.Types.ObjectId
 
-  @Prop()
+  @Prop({default: ''})
   holderName: string
 
   @Prop({ default: Date.now })

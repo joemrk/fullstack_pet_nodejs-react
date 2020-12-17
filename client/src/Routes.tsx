@@ -7,6 +7,7 @@ import Navbar from './Components/Navbar';
 import AfterAuth from './pages/auth/AfterAuth';
 import Hosters from './pages/hosters/Hosters';
 import CreateHoster from "./pages/hosters/CreateHoster";
+import CreateSite from "./pages/sites/CreateSite";
 
 export const useRoutes = (isAuth: boolean) => {
   if (isAuth) {
@@ -26,7 +27,9 @@ export const useRoutes = (isAuth: boolean) => {
                 <Route path="/hosters/create" exact>
                   <CreateHoster />
                 </Route>
-
+                <Route path="/sites/create" exact>
+                  <CreateSite />
+                </Route>
 
 
                 <Redirect to="/sites" />

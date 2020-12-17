@@ -22,7 +22,6 @@ const CreateHoster: React.FC = (props) => {
     <Formik
       initialValues={{ hosterName: '', siteLink: '', link: '', login: '', passsword: '' }}
       onSubmit={async (values) => {
-        console.log(values);
         const data = await createHoster({
           variables: {
             createHosterInput: {

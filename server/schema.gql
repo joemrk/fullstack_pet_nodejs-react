@@ -71,10 +71,15 @@ type Mutation {
 }
 
 input SiteInput {
-  domainProvider: String!
-  hostProvider: String!
+  domainProviderId: ID!
+  domainProviderName: String!
+  hostProviderId: ID!
+  hostProviderName: String!
   domain: String!
-  holder: String!
+  dedicatedIp: String!
+  yandexId: String!
+  holderId: ID!
+  holderName: String!
 }
 
 input HosterInput {
