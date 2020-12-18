@@ -17,7 +17,8 @@ import { useMeQuery } from '../generated/graphql';
 const Navbar: React.FC = (props) => {
   const ctx = useContext(AuthContext)
   const { data, loading } = useMeQuery()
-  if (!data?.me.user) ctx.logoutContext()
+
+  if (!loading && !data?.me.user) ctx.logoutContext()
 
 
   return (
@@ -27,8 +28,8 @@ const Navbar: React.FC = (props) => {
         height: '100vh',
         position: 'fixed',
         left: 0,
-      }}
-    >
+      }} >
+
       <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} >
         <Menu.Item key="1" icon={<GlobalOutlined />}>
           <Link to="/sites">Sites</Link>

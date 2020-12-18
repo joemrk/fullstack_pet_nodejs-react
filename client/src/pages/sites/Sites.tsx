@@ -118,7 +118,7 @@ const Sites: React.FC = (props) => {
           ...rowSelection,
         }}
         dataSource={data?.sites}
-        columns={columns} />;
+        columns={columns} />
 
 
 
