@@ -29,10 +29,10 @@ export class SiteInput {
   @Field()
   readonly yandexId: string
 
-  @Field(() => ID)
-  readonly holderId: string
+  // @Field(() => ID)
+  // readonly holderId: string
 
-  @Field()
-  readonly holderName: string
+  // @Field()
+  // readonly holderName: string
 
 }

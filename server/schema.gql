@@ -92,8 +92,6 @@ input SiteInput {
   domain: String!
   dedicatedIp: String!
   yandexId: String!
-  holderId: ID!
-  holderName: String!
 }
 
 input HosterInput {

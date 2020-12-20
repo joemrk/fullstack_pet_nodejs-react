@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import { Button, Form, Input, Select, Space, Typography } from 'antd';
 import { useHostersQuery, useCreateHosterMutation, useCreateSiteMutation, useCampaignsQuery } from '../../generated/graphql';
 import { AnyAaaaRecord } from 'dns';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -27,6 +28,7 @@ const selectSearchProps = {
 
 
 const CreateSite: React.FC = (props) => {
+  const history = useHistory()
   const { data:hostersData , loading:hostersLoading } = useHostersQuery()
   const {data:campaignData, loading:campaignLoading} = useCampaignsQuery()
   const [createSite] = useCreateSiteMutation()
@@ -56,16 +58,15 @@ const CreateSite: React.FC = (props) => {
         domain: '',
         dedicatedIp: '',
         yandexId: '',
-        holderId: '',
-        holderName: ''
+        // holderId: '',
+        // holderName: ''
       }}
       onSubmit={async (values) => {
-        console.log(values);
-        // const data  = await createSite({
-        //   variables:{
-        //     inputs:values
-        // }})
-
+        const data  = await createSite({
+          variables:{
+            inputs:values
+        }})
+        if(data.data?.createSite) history.push('/sites')
       }}
     >{({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (
       <Layout>

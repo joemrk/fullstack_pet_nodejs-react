@@ -1,88 +1,22 @@
-import { Button, Divider, List, Radio, Space, Table } from 'antd';
+import { Button, Divider, Space, Table } from 'antd';
 import Layout from 'antd/lib/layout/layout';
-import React from 'react'
-import { useSitesQuery } from '../../generated/graphql';
-import { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { SiteEntity, useCampaignsQuery, useSitesQuery } from '../../generated/graphql';
 
 
-const columns = [
-  {
-    title: 'Hoster',
-    dataIndex: 'hoster',
-    key: 'hoster',
-  },
-  {
-    title: 'Domain',
-    dataIndex: 'domain',
-    key: 'domain',
-    render: (text: string) => <a href={`http://${text}`} target="_bank">{text}</a>
-  },
-  {
-    title: 'Ip',
-    dataIndex: 'ip',
-    key: 'ip',
-  },
-  {
-    title: 'Campaign',
-    dataIndex: 'campaign',
-    key: 'campaign',
-    filters: [
-      {
-        text: 'PL - Maxemizer',
-        value: 'PL - Maxemizer'
-      },
-      {
-        text: 'EU - AdCode',
-        value: 'EU - AdCode'
-      },
-    ],
-    onFilter: (value: any, record: any) => record.campaign.indexOf(value) === 0,
-    sorter: (a: any, b: any) => a.domain.length - b.domain.length,
-    // sortDirections: ['descend'],
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description',
-  },
-  {
-    title: 'Yandex',
-    dataIndex: 'yandex',
-    key: 'yandex',
-    render: (text: string) => <a href={`http://yandex.metrica.ru/${text}`}>{text}</a>
-  },
-  {
-    title: 'Cloaking',
-    dataIndex: 'cloaking',
-    key: 'cloaking',
-    render: (text: string) => <a>{text}</a>
-  },
-  {
-    title: 'Holder',
-    dataIndex: 'holder',
-    key: 'holder',
-    render: (text: string) => <a href={`/users/${text}`}>{text}</a>
-  },
-  {
-    title: 'Creator',
-    dataIndex: 'creator',
-    key: 'creator',
-    render: (text: string) => <a href={`/users/${text}`}>{text}</a>
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: () => (
-      <Space size="middle">
-        <a>Transfer</a>
-        <a>Delete</a>
-      </Space>
-    )
-  }
-];
 
 const Sites: React.FC = (props) => {
+  const history = useHistory()
+  const { data: sitesData, loading: sitesLoading, error: sitesError } = useSitesQuery()
+  const { data: campaignData, loading: campaignLoading } = useCampaignsQuery()
+ 
+  const campaignColumnFilter = campaignData?.campaigns.map(c => {
+    return {
+      text: c.fullCampaignName,
+      value: c.id
+    }
+  })
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
@@ -94,10 +28,64 @@ const Sites: React.FC = (props) => {
       name: record.name,
     }),
   };
-  const history = useHistory()
-  const { data, loading, error } = useSitesQuery()
 
-  if (loading) return <div>Loading...</div>
+
+  const columns = [
+    {
+      title: 'Providers',
+      key: 'providers',
+      render: (text: string, record: SiteEntity) => <div>{`${record.domainProviderName} / ${record.hostProviderName}`}</div>
+    },
+    {
+      title: 'Domain',
+      dataIndex: 'domain',
+      key: 'domain',
+      render: (text: string) => <a href={`http://${text}`} target="_bank">{text}</a>
+    },
+    {
+      title: 'Ip',
+      dataIndex: 'dedicatedIp',
+      key: 'dedicatedIp',
+    },
+    {
+      title: 'Campaign',
+      dataIndex: 'campaignName',
+      key: 'campaignName',
+      filters: campaignColumnFilter,
+      onFilter: (value: any, record: SiteEntity) => record.campaignId.indexOf(value) === 0,
+      sorter: (a: any, b: any) => a.domain.length - b.domain.length,
+      // sortDirections: ['descend'],
+    },
+    {
+      title: 'Yandex',
+      dataIndex: 'yandexId',
+      key: 'yandexId',
+      render: (text: string) => <a href={`http://yandex.metrica.ru/${text}`}>{text}</a>
+    },
+    {
+      title: 'Holder',
+      dataIndex: 'holderName',
+      key: 'holderName',
+      render: (text: string) => (!text) ? <div>free</div> : <a href="#">{text}</a>
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: () => (
+        <Space size="middle">
+          <a>Transfer</a>
+          <a>Delete</a>
+          <a>Edit</a>
+        </Space>
+      )
+    }
+  ];
+
+
+
+
+
+  if (sitesLoading || campaignLoading) return <div>Loading...</div>
 
   return (
     <Layout>
@@ -117,7 +105,8 @@ const Sites: React.FC = (props) => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        dataSource={data?.sites}
+        dataSource={sitesData?.sites}
+        // dataSource={[]}
         columns={columns} />
 
 

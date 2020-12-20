@@ -160,8 +160,6 @@ export type SiteInput = {
   domain: Scalars['String'];
   dedicatedIp: Scalars['String'];
   yandexId: Scalars['String'];
-  holderId: Scalars['ID'];
-  holderName: Scalars['String'];
 };
 
 export type HosterInput = {
@@ -254,7 +252,7 @@ export type CreateSiteMutation = (
   { __typename?: 'Mutation' }
   & { createSite: (
     { __typename?: 'SiteEntity' }
-    & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'domain' | 'dedicatedIp' | 'yandexId' | 'holderId' | 'holderName' | 'createdAt'>
+    & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'domain' | 'dedicatedIp' | 'yandexId'>
   ) }
 );
 
@@ -328,7 +326,7 @@ export type SitesQuery = (
   { __typename?: 'Query' }
   & { sites: Array<(
     { __typename?: 'SiteEntity' }
-    & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'domain' | 'dedicatedIp' | 'yandexId' | 'holderId' | 'holderName' | 'createdAt'>
+    & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'campaignId' | 'campaignName' | 'domain' | 'dedicatedIp' | 'yandexId' | 'holderId' | 'holderName' | 'createdAt'>
   )> }
 );
 
@@ -460,9 +458,6 @@ export const CreateSiteDocument = gql`
     domain
     dedicatedIp
     yandexId
-    holderId
-    holderName
-    createdAt
   }
 }
     `;
@@ -665,6 +660,8 @@ export const SitesDocument = gql`
     domainProviderName
     hostProviderId
     hostProviderName
+    campaignId
+    campaignName
     domain
     dedicatedIp
     yandexId

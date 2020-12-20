@@ -10,10 +10,5 @@ mutation CreateSite($inputs: SiteInput!){
     
     dedicatedIp
     yandexId
-    
-    holderId
-    holderName
-    
-    createdAt
   }
 }
