@@ -16,6 +16,12 @@ export class User {
 
   @Prop({type: UserRole, enum: UserRole, default: UserRole.Default})
   role: string
+
+  @Prop({ default: ''})
+  yandexLogin: string
+
+  @Prop({ default: ''})
+  telegram: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

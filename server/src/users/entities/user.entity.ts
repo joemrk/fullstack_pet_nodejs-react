@@ -4,14 +4,20 @@ import { ObjectType, Field, ID } from "@nestjs/graphql"
 @ObjectType()
 export class UserEntity{
   @Field(()=> ID)
-  id?: string
+  readonly id?: string
 
   @Field()
-  username: string
+  readonly username: string
 
   @Field()
-  password: string
+  readonly password: string
 
   @Field()
-  role: string
+  readonly role: string
+
+  @Field()
+  readonly yandexLogin: string
+
+  @Field()
+  readonly telegram: string
 }

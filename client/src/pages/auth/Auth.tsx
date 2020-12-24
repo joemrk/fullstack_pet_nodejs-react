@@ -102,14 +102,14 @@ const Auth: React.FC = (props) => {
                                             handleSubmit();
                                         }}
                                     > Login </Button>
-                                    <Button
+                                    {/* <Button
                                         type="primary"
                                         htmlType="button"
                                         loading={isSubmitting}
                                         onClick={() => {
                                             handleSubmit();
                                         }}
-                                    > Register </Button>
+                                    > Register </Button> */}
 
                                 </Space>
                             </Form.Item>

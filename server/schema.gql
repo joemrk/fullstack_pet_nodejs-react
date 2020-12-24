@@ -2,10 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AuthData {
+  link: String!
+  login: String!
+  password: String!
+}
+
+type HosterEntity {
+  id: ID!
+  name: String!
+  siteLink: String!
+  authData: AuthData!
+  sitesCount: Int!
+}
+
 type SiteEntity {
   id: ID!
-  domainProviderId: ID!
-  domainProviderName: String!
+  domainProviderId: HosterEntity!
   hostProviderId: ID!
   hostProviderName: String!
   campaignId: ID!
@@ -28,20 +41,8 @@ type UserEntity {
   username: String!
   password: String!
   role: String!
-}
-
-type AuthData {
-  link: String!
-  login: String!
-  password: String!
-}
-
-type HosterEntity {
-  id: ID!
-  name: String!
-  siteLink: String!
-  authData: AuthData!
-  sitesCount: Int!
+  yandexLogin: String!
+  telegram: String!
 }
 
 type UserResponse {
@@ -83,8 +84,7 @@ type Mutation {
 }
 
 input SiteInput {
-  domainProviderId: ID!
-  domainProviderName: String!
+  domainProviderId: String!
   hostProviderId: ID!
   hostProviderName: String!
   campaignId: ID!
@@ -109,6 +109,8 @@ input AuthDataInput {
 input UserInput {
   username: String!
   password: String!
+  yandexLogin: String!
+  telegram: String!
 }
 
 input CampaignInput {
