@@ -6,7 +6,7 @@ https://habr.com/ru/post/462585/
 https://medium.com/@chnirt/how-do-i-practice-with-nestjs-nestjs-typeorm-mongodb-9e407818a296
 https://tkssharma.com/nestjs-with-typeORM-mongoose-and-mysql-for-api-development/
 
--------------------
+==============
 
 site list + random data
 
@@ -60,6 +60,14 @@ white:string
 black:string
 siteDetailsLink:string
 
+
+==============
+
+for mongo migrations
+
+1 >migrate-mongo create migration-name
+2 update function 'up' in to migration file
+3 >migrate-mongo up
 
 ==============
 

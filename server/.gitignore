@@ -37,3 +37,4 @@ lerna-debug.log*
 consts.ts
 ormconfig.json
 .env
+migrate-mongo-config.js
