@@ -5,7 +5,8 @@ module.exports = {
     // Example:
     // await db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: true}});
 
-    return db.collection('users').updateMany({}, { $set: { telegram: "", yandexLogin: "" } })
+    // return db.collection('users').updateMany({}, { $set: { telegram: "", yandexLogin: "" } })
+    return db.collection('sites').updateMany({}, { $set: { telegram: "", yandexLogin: "" } })
   },
 
   async down(db, client) {

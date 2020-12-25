@@ -10,6 +10,8 @@ import CreateHoster from "./pages/hosters/CreateHoster";
 import CreateSite from "./pages/sites/CreateSite";
 import Campaigns from "./pages/campaigns/Campaigns";
 import CreateCampaign from "./pages/campaigns/CreateCampaign";
+import Users from './pages/users/Users';
+import CreateUser from './pages/users/CreateUser';
 
 export const useRoutes = (isAuth: boolean) => {
   if (isAuth) {
@@ -38,6 +40,13 @@ export const useRoutes = (isAuth: boolean) => {
                 <Route path="/campaigns/create" exact>
                   <CreateCampaign />
                 </Route>
+                <Route path="/users" exact>
+                  <Users />
+                </Route>
+                <Route path="/users/create" exact>
+                  <CreateUser />
+                </Route>
+
 
 
                 

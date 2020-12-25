@@ -34,7 +34,7 @@ const columns = [
 
 const Campaigns: React.FC = ({ }) => {
 
-  const { data, loading } = useCampaignsQuery()
+  const { data, loading } = useCampaignsQuery({ fetchPolicy: "cache-and-network" })
   const history = useHistory()
 
 

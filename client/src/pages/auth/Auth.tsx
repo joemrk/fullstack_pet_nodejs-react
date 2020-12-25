@@ -8,7 +8,7 @@ import { useLoginMutation, useRegisterMutation } from '../../generated/graphql';
 const { Title } = Typography;
 
 const Auth: React.FC = (props) => {
-    const [registration] = useRegisterMutation()
+    // const [registration] = useRegisterMutation()
     const [login] = useLoginMutation()
     const history = useHistory()
 
@@ -26,13 +26,12 @@ const Auth: React.FC = (props) => {
                     variables: {
                         input: {
                             password: values.password,
-                            username: values.username
+                            username: values.username,
                         }
                     }
                 }
                 if (values.loginBtn) {
                     const result = await login(authInput)
-                    console.log(result);
 
                     if (result.data?.login.error) values.errors = result.data.login.error
                     else if (result.data?.login) {
@@ -40,16 +39,16 @@ const Auth: React.FC = (props) => {
                         setToken(token)
                     }
                 }
-                if (!values.loginBtn) {
-                    const result = await registration(authInput)
-                    console.log(result);
+                // if (!values.loginBtn) {
+                //     const result = await registration(authInput)
+                //     console.log(result);
 
-                    if (result.data?.registration.error) values.errors = result.data.registration.error
-                    else if (result.data?.registration) {
-                        const token = result.data.registration.token!
-                        setToken(token)
-                    }
-                }
+                //     if (result.data?.registration.error) values.errors = result.data.registration.error
+                //     else if (result.data?.registration) {
+                //         const token = result.data.registration.token!
+                //         setToken(token)
+                //     }
+                // }
             }}
         >
             {({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (

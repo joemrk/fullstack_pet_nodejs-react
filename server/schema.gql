@@ -2,23 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthData {
-  link: String!
-  login: String!
-  password: String!
-}
-
-type HosterEntity {
-  id: ID!
-  name: String!
-  siteLink: String!
-  authData: AuthData!
-  sitesCount: Int!
-}
-
 type SiteEntity {
   id: ID!
-  domainProviderId: HosterEntity!
+  domainProviderId: ID!
+  domainProviderName: String!
   hostProviderId: ID!
   hostProviderName: String!
   campaignId: ID!
@@ -43,6 +30,20 @@ type UserEntity {
   role: String!
   yandexLogin: String!
   telegram: String!
+}
+
+type AuthData {
+  link: String!
+  login: String!
+  password: String!
+}
+
+type HosterEntity {
+  id: ID!
+  name: String!
+  siteLink: String!
+  authData: AuthData!
+  sitesCount: Int!
 }
 
 type UserResponse {
@@ -79,12 +80,13 @@ type Mutation {
   createHoster(createHosterInput: HosterInput!): HosterEntity!
   removeHoster(id: Int!): HosterEntity!
   registration(input: UserInput!): TokenResponse!
-  login(input: UserInput!): TokenResponse!
+  login(input: UserLogin!): TokenResponse!
   createCampaign(campaignInput: CampaignInput!): Campaign!
 }
 
 input SiteInput {
-  domainProviderId: String!
+  domainProviderId: ID!
+  domainProviderName: String!
   hostProviderId: ID!
   hostProviderName: String!
   campaignId: ID!
@@ -111,6 +113,11 @@ input UserInput {
   password: String!
   yandexLogin: String!
   telegram: String!
+}
+
+input UserLogin {
+  username: String!
+  password: String!
 }
 
 input CampaignInput {

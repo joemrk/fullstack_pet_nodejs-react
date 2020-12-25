@@ -4,6 +4,7 @@ import { UsersService } from '../users/users.service';
 import { UserInput } from '../users/dto/user.input';
 import { TokenResponse } from './entities/token-response.entity';
 import { UserResponse } from 'src/users/entities/user-response.entity';
+import { UserLogin } from './inputs/user-login.input';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +32,7 @@ export class AuthService {
     }
   }
 
-  async login(input: UserInput): Promise<TokenResponse> {
+  async login(input: UserLogin): Promise<TokenResponse> {
     try {
       const user = await this.usersService.findByName(input.username)
       if (user || user.password === input.password) {

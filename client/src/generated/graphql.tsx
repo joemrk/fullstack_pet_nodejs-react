@@ -39,6 +39,8 @@ export type UserEntity = {
   username: Scalars['String'];
   password: Scalars['String'];
   role: Scalars['String'];
+  yandexLogin: Scalars['String'];
+  telegram: Scalars['String'];
 };
 
 export type AuthData = {
@@ -142,7 +144,7 @@ export type MutationRegistrationArgs = {
 
 
 export type MutationLoginArgs = {
-  input: UserInput;
+  input: UserLogin;
 };
 
 
@@ -175,6 +177,13 @@ export type AuthDataInput = {
 };
 
 export type UserInput = {
+  username: Scalars['String'];
+  password: Scalars['String'];
+  yandexLogin: Scalars['String'];
+  telegram: Scalars['String'];
+};
+
+export type UserLogin = {
   username: Scalars['String'];
   password: Scalars['String'];
 };
@@ -257,7 +266,7 @@ export type CreateSiteMutation = (
 );
 
 export type LoginMutationVariables = Exact<{
-  input: UserInput;
+  input: UserLogin;
 }>;
 
 
@@ -337,7 +346,7 @@ export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'UserEntity' }
-    & Pick<UserEntity, 'id' | 'username' | 'password' | 'role'>
+    & Pick<UserEntity, 'id' | 'username' | 'password' | 'role' | 'yandexLogin' | 'telegram'>
   )> }
 );
 
@@ -487,7 +496,7 @@ export type CreateSiteMutationHookResult = ReturnType<typeof useCreateSiteMutati
 export type CreateSiteMutationResult = Apollo.MutationResult<CreateSiteMutation>;
 export type CreateSiteMutationOptions = Apollo.BaseMutationOptions<CreateSiteMutation, CreateSiteMutationVariables>;
 export const LoginDocument = gql`
-    mutation Login($input: UserInput!) {
+    mutation Login($input: UserLogin!) {
   login(input: $input) {
     ...RegularTokenResponse
   }
@@ -703,6 +712,8 @@ export const UsersDocument = gql`
     username
     password
     role
+    yandexLogin
+    telegram
   }
 }
     `;

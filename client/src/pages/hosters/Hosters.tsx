@@ -45,7 +45,7 @@ const columns = [
 
 const Hosters: React.FC = ({ }) => {
 
-  const { data, loading } = useHostersQuery()
+  const { data, loading } = useHostersQuery({ fetchPolicy: "cache-and-network" })
   const history = useHistory()
 
 

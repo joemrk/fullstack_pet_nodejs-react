@@ -1,7 +1,7 @@
 import React from 'react'
 import { Formik } from 'formik'
 import Layout from 'antd/lib/layout/layout';
-import { Button, Form, Input, Space, Typography } from 'antd';
+import { Button, Form, Input, Space } from 'antd';
 import { useCreateCampaignMutation } from '../../generated/graphql';
 import { useHistory } from 'react-router-dom';
 

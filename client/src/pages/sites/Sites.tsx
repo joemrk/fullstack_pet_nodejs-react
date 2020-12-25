@@ -8,8 +8,8 @@ import { SiteEntity, useCampaignsQuery, useSitesQuery } from '../../generated/gr
 
 const Sites: React.FC = (props) => {
   const history = useHistory()
-  const { data: sitesData, loading: sitesLoading, error: sitesError } = useSitesQuery()
-  const { data: campaignData, loading: campaignLoading } = useCampaignsQuery()
+  const { data: sitesData, loading: sitesLoading, error: sitesError } = useSitesQuery({ fetchPolicy: "cache-and-network" })
+  const { data: campaignData, loading: campaignLoading } = useCampaignsQuery({ fetchPolicy: "cache-and-network" })
  
   const campaignColumnFilter = campaignData?.campaigns.map(c => {
     return {

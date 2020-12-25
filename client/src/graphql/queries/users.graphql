@@ -4,5 +4,7 @@ query Users{
     username
     password
     role
+    yandexLogin
+    telegram
   }
 }

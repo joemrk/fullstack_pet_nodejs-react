@@ -4,6 +4,7 @@ import { UserInput } from "src/users/dto/user.input";
 import { UserResponse } from "src/users/entities/user-response.entity";
 import { AuthService } from './auth.service';
 import { TokenResponse } from "./entities/token-response.entity";
+import { UserLogin } from './inputs/user-login.input';
 
 
 @Resolver()
@@ -20,7 +21,7 @@ export class AuthResolver{
   }
 
   @Mutation(() => TokenResponse)
-  async login(@Args('input') input: UserInput) {
+  async login(@Args('input') input: UserLogin) {
     return await this.authService.login(input)
   }
 
