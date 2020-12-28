@@ -2,7 +2,7 @@ import React from 'react'
 import Layout from 'antd/lib/layout/layout';
 import { Formik } from 'formik';
 import { Button, Form, Input, Select, Space, Typography } from 'antd';
-import { useHostersQuery, useCreateHosterMutation, useCreateSiteMutation, useCampaignsQuery } from '../../generated/graphql';
+import { useHostersQuery, useCreateHosterMutation, useCreateSiteMutation, useCampaignsQuery, useUsersQuery } from '../../generated/graphql';
 import { AnyAaaaRecord } from 'dns';
 import { useHistory } from 'react-router-dom';
 
@@ -23,14 +23,15 @@ const selectSearchProps = {
   optionFilterProp: "children",
   filterOption: (input: any, option: any) =>
     option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-
 }
 
 
 const CreateSite: React.FC = (props) => {
   const history = useHistory()
-  const { data:hostersData , loading:hostersLoading } = useHostersQuery()
-  const {data:campaignData, loading:campaignLoading} = useCampaignsQuery()
+  const { data: hostersData, loading: hostersLoading } = useHostersQuery()
+  const { data: campaignData, loading: campaignLoading } = useCampaignsQuery()
+  const { data: usersData, loading: usersLoading } = useUsersQuery()
+
   const [createSite] = useCreateSiteMutation()
 
 
@@ -45,6 +46,9 @@ const CreateSite: React.FC = (props) => {
     <Select.Option value={h.id}>{h.fullCampaignName}</Select.Option>
   )) : []
 
+  const usersSelect = usersData?.users ? usersData?.users.map(h => (
+    <Select.Option value={h.id}>{h.username}</Select.Option>
+  )) : []
 
   return (
     <Formik
@@ -58,42 +62,46 @@ const CreateSite: React.FC = (props) => {
         domain: '',
         dedicatedIp: '',
         yandexId: '',
-        // holderId: '',
-        // holderName: ''
-      }}
+        holderId: '',
+        holderName: ''
+            }}
       onSubmit={async (values) => {
-        const data  = await createSite({
-          variables:{
-            inputs:values
-        }})
-        if(data.data?.createSite) history.push('/sites')
+        const data = await createSite({
+          variables: {
+            inputs: values
+          }
+        })
+
+        if (data.data?.createSite) history.push('/sites')
       }}
     >{({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (
       <Layout>
         <Form
           {...formItemLayout}
           layout={'horizontal'}
-          // onSubmitCapture={handleSubmit}
+          onSubmitCapture={handleSubmit}
         >
           <Form.Item
+            rules={[{ required: true, message: 'Field is required!' }]}
             name="domainProvider"
             label="Domain provider">
             <Select
-             {...selectSearchProps}
-            onChange={(_, o:any) => {
-              values.domainProviderId = o.value
-              values.domainProviderName = o.children
-            }}
+              {...selectSearchProps}
+              onChange={(_, o: any) => {
+                values.domainProviderId = o.value
+                values.domainProviderName = o.children
+              }}
             >
               {hosterSelect}
             </Select>
           </Form.Item>
           <Form.Item
+            rules={[{ required: true, message: 'Field is required!' }]}
             name="hostProvider"
             label="Host provider">
             <Select
               {...selectSearchProps}
-              onChange={(_, o:any) => {
+              onChange={(_, o: any) => {
                 values.hostProviderId = o.value
                 values.hostProviderName = o.children
               }}
@@ -102,11 +110,12 @@ const CreateSite: React.FC = (props) => {
             </Select>
           </Form.Item>
           <Form.Item
+            rules={[{ required: true, message: 'Field is required!' }]}
             name="campaign"
             label="Campaign">
             <Select
               {...selectSearchProps}
-              onChange={(_, o:any) => {
+              onChange={(_, o: any) => {
                 values.campaignId = o.value
                 values.campaignName = o.children
               }}
@@ -117,9 +126,9 @@ const CreateSite: React.FC = (props) => {
 
 
           <Form.Item
+            rules={[{ required: true, message: 'Field is required!' }]}
             label="Domain"
-            name="domain"
-          >
+            name="domain" >
             <Input
               value={values.domain}
               onChange={handleChange}
@@ -143,7 +152,20 @@ const CreateSite: React.FC = (props) => {
               onChange={handleChange}
             />
           </Form.Item>
-
+          <br />
+          <Form.Item
+            name="holderName"
+            label="Holder">
+            <Select
+              {...selectSearchProps}
+              onChange={(_, o: any) => {
+                values.holderId = o.value
+                values.holderName = o.children
+              }}
+            >
+              {usersSelect}
+            </Select>
+          </Form.Item>
 
           <br />
           <Form.Item {...buttonItemLayout}>
@@ -157,7 +179,6 @@ const CreateSite: React.FC = (props) => {
             >Create</Button>
           </Form.Item>
         </Form>
-
 
       </Layout>
     )}

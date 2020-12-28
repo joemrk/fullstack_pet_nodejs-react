@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model, Types } from 'mongoose';
 import { SiteInput } from './dto/site.input';
 import { Site, SiteDocument } from './schemas/site.schema';
 import { Schema} from 'mongoose';
+import { SitesResponse } from './entities/sites-response.entity';
+import { SiteEntity } from './entities/site.entity';
 
 
 @Injectable()
@@ -18,20 +20,26 @@ export class SitesService {
     return await this.siteModel.find().exec()
   }
 
-  async create({
-    domainProviderId,
-    hostProviderId,
-    campaignId,
-    // holderId,
-    ...domain}: SiteInput): Promise<Site> {
-    const newSite = new this.siteModel({
-      domainProviderId: new Types.ObjectId(domainProviderId),
-      hostProviderId: new Types.ObjectId(hostProviderId),
-      campaignId: new Types.ObjectId(campaignId),
-      // holderId: new Schema.Types.ObjectId(holderId),
-      ...domain
-    })
+  async create(input: SiteInput): Promise<Site> {
+    const newSite = new this.siteModel(input)
     return await newSite.save()
+  }
+
+  async findOne(id: string) {
+    return await this.siteModel.findById(id)
+  }
+
+  async update(id: string, inputs: SiteInput): Promise<Site> {
+    const updateResult = await this.findOne(id)
+    if(updateResult){    
+      for(let oldDataKey in updateResult){
+        for(let newDataKey in inputs){
+          if(oldDataKey === newDataKey) updateResult[oldDataKey] = inputs[newDataKey]
+        }
+      }
+      return await updateResult.save()
+    }
+    else throw new NotFoundException('Site not found.');
   }
 
   async findByHolder(holderId: string ): Promise<Site[]>{

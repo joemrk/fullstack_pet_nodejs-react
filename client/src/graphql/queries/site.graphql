@@ -1,0 +1,5 @@
+query Site($id:String!){
+  getSiteById(id:$id){
+      ...RegularSiteEntity
+  }
+}

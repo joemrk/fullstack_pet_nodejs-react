@@ -18,16 +18,16 @@ export type Scalars = {
 export type SiteEntity = {
   __typename?: 'SiteEntity';
   id: Scalars['ID'];
-  domainProviderId: Scalars['ID'];
+  domainProviderId: Scalars['String'];
   domainProviderName: Scalars['String'];
-  hostProviderId: Scalars['ID'];
+  hostProviderId: Scalars['String'];
   hostProviderName: Scalars['String'];
-  campaignId: Scalars['ID'];
+  campaignId: Scalars['String'];
   campaignName: Scalars['String'];
   domain: Scalars['String'];
   dedicatedIp: Scalars['String'];
   yandexId: Scalars['String'];
-  holderId: Scalars['ID'];
+  holderId: Scalars['String'];
   holderName: Scalars['String'];
   createdAt: Scalars['DateTime'];
 };
@@ -83,6 +83,7 @@ export type Query = {
   __typename?: 'Query';
   sites: Array<SiteEntity>;
   getSitesByHolder: Array<SiteEntity>;
+  getSiteById: SiteEntity;
   users: Array<UserEntity>;
   findUserByName: UserEntity;
   hosters: Array<HosterEntity>;
@@ -95,6 +96,11 @@ export type Query = {
 
 export type QueryGetSitesByHolderArgs = {
   holderId: Scalars['String'];
+};
+
+
+export type QueryGetSiteByIdArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -115,6 +121,7 @@ export type QueryCampaignArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSite: SiteEntity;
+  updateSite: SiteEntity;
   createHoster: HosterEntity;
   removeHoster: HosterEntity;
   registration: TokenResponse;
@@ -125,6 +132,12 @@ export type Mutation = {
 
 export type MutationCreateSiteArgs = {
   inputs: SiteInput;
+};
+
+
+export type MutationUpdateSiteArgs = {
+  inputs: SiteInput;
+  id: Scalars['String'];
 };
 
 
@@ -153,15 +166,17 @@ export type MutationCreateCampaignArgs = {
 };
 
 export type SiteInput = {
-  domainProviderId: Scalars['ID'];
+  domainProviderId: Scalars['String'];
   domainProviderName: Scalars['String'];
-  hostProviderId: Scalars['ID'];
+  hostProviderId: Scalars['String'];
   hostProviderName: Scalars['String'];
-  campaignId: Scalars['ID'];
+  campaignId: Scalars['String'];
   campaignName: Scalars['String'];
   domain: Scalars['String'];
   dedicatedIp: Scalars['String'];
   yandexId: Scalars['String'];
+  holderId: Scalars['String'];
+  holderName: Scalars['String'];
 };
 
 export type HosterInput = {
@@ -201,6 +216,11 @@ export type RegularAuthDataFragment = (
 export type RegularCampaignFragment = (
   { __typename?: 'Campaign' }
   & Pick<Campaign, 'id' | 'langue' | 'campaignName' | 'fullCampaignName'>
+);
+
+export type RegularSiteEntityFragment = (
+  { __typename?: 'SiteEntity' }
+  & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'campaignId' | 'campaignName' | 'domain' | 'dedicatedIp' | 'yandexId' | 'holderId' | 'holderName' | 'createdAt'>
 );
 
 export type RegularTokenResponseFragment = (
@@ -261,7 +281,7 @@ export type CreateSiteMutation = (
   { __typename?: 'Mutation' }
   & { createSite: (
     { __typename?: 'SiteEntity' }
-    & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'domain' | 'dedicatedIp' | 'yandexId'>
+    & RegularSiteEntityFragment
   ) }
 );
 
@@ -288,6 +308,20 @@ export type RegisterMutation = (
   & { registration: (
     { __typename?: 'TokenResponse' }
     & RegularTokenResponseFragment
+  ) }
+);
+
+export type UpdateSiteMutationVariables = Exact<{
+  id: Scalars['String'];
+  inputs: SiteInput;
+}>;
+
+
+export type UpdateSiteMutation = (
+  { __typename?: 'Mutation' }
+  & { updateSite: (
+    { __typename?: 'SiteEntity' }
+    & RegularSiteEntityFragment
   ) }
 );
 
@@ -328,6 +362,19 @@ export type MeQuery = (
   ) }
 );
 
+export type SiteQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type SiteQuery = (
+  { __typename?: 'Query' }
+  & { getSiteById: (
+    { __typename?: 'SiteEntity' }
+    & RegularSiteEntityFragment
+  ) }
+);
+
 export type SitesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -335,7 +382,7 @@ export type SitesQuery = (
   { __typename?: 'Query' }
   & { sites: Array<(
     { __typename?: 'SiteEntity' }
-    & Pick<SiteEntity, 'id' | 'domainProviderId' | 'domainProviderName' | 'hostProviderId' | 'hostProviderName' | 'campaignId' | 'campaignName' | 'domain' | 'dedicatedIp' | 'yandexId' | 'holderId' | 'holderName' | 'createdAt'>
+    & RegularSiteEntityFragment
   )> }
 );
 
@@ -363,6 +410,23 @@ export const RegularCampaignFragmentDoc = gql`
   langue
   campaignName
   fullCampaignName
+}
+    `;
+export const RegularSiteEntityFragmentDoc = gql`
+    fragment RegularSiteEntity on SiteEntity {
+  id
+  domainProviderId
+  domainProviderName
+  hostProviderId
+  hostProviderName
+  campaignId
+  campaignName
+  domain
+  dedicatedIp
+  yandexId
+  holderId
+  holderName
+  createdAt
 }
     `;
 export const RegularTokenResponseFragmentDoc = gql`
@@ -459,17 +523,10 @@ export type CreateHosterMutationOptions = Apollo.BaseMutationOptions<CreateHoste
 export const CreateSiteDocument = gql`
     mutation CreateSite($inputs: SiteInput!) {
   createSite(inputs: $inputs) {
-    id
-    domainProviderId
-    domainProviderName
-    hostProviderId
-    hostProviderName
-    domain
-    dedicatedIp
-    yandexId
+    ...RegularSiteEntity
   }
 }
-    `;
+    ${RegularSiteEntityFragmentDoc}`;
 export type CreateSiteMutationFn = Apollo.MutationFunction<CreateSiteMutation, CreateSiteMutationVariables>;
 
 /**
@@ -559,6 +616,39 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateSiteDocument = gql`
+    mutation UpdateSite($id: String!, $inputs: SiteInput!) {
+  updateSite(id: $id, inputs: $inputs) {
+    ...RegularSiteEntity
+  }
+}
+    ${RegularSiteEntityFragmentDoc}`;
+export type UpdateSiteMutationFn = Apollo.MutationFunction<UpdateSiteMutation, UpdateSiteMutationVariables>;
+
+/**
+ * __useUpdateSiteMutation__
+ *
+ * To run a mutation, you first call `useUpdateSiteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSiteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSiteMutation, { data, loading, error }] = useUpdateSiteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      inputs: // value for 'inputs'
+ *   },
+ * });
+ */
+export function useUpdateSiteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSiteMutation, UpdateSiteMutationVariables>) {
+        return Apollo.useMutation<UpdateSiteMutation, UpdateSiteMutationVariables>(UpdateSiteDocument, baseOptions);
+      }
+export type UpdateSiteMutationHookResult = ReturnType<typeof useUpdateSiteMutation>;
+export type UpdateSiteMutationResult = Apollo.MutationResult<UpdateSiteMutation>;
+export type UpdateSiteMutationOptions = Apollo.BaseMutationOptions<UpdateSiteMutation, UpdateSiteMutationVariables>;
 export const CampaignsDocument = gql`
     query Campaigns {
   campaigns {
@@ -661,25 +751,46 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const SiteDocument = gql`
+    query Site($id: String!) {
+  getSiteById(id: $id) {
+    ...RegularSiteEntity
+  }
+}
+    ${RegularSiteEntityFragmentDoc}`;
+
+/**
+ * __useSiteQuery__
+ *
+ * To run a query within a React component, call `useSiteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSiteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSiteQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSiteQuery(baseOptions: Apollo.QueryHookOptions<SiteQuery, SiteQueryVariables>) {
+        return Apollo.useQuery<SiteQuery, SiteQueryVariables>(SiteDocument, baseOptions);
+      }
+export function useSiteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SiteQuery, SiteQueryVariables>) {
+          return Apollo.useLazyQuery<SiteQuery, SiteQueryVariables>(SiteDocument, baseOptions);
+        }
+export type SiteQueryHookResult = ReturnType<typeof useSiteQuery>;
+export type SiteLazyQueryHookResult = ReturnType<typeof useSiteLazyQuery>;
+export type SiteQueryResult = Apollo.QueryResult<SiteQuery, SiteQueryVariables>;
 export const SitesDocument = gql`
     query Sites {
   sites {
-    id
-    domainProviderId
-    domainProviderName
-    hostProviderId
-    hostProviderName
-    campaignId
-    campaignName
-    domain
-    dedicatedIp
-    yandexId
-    holderId
-    holderName
-    createdAt
+    ...RegularSiteEntity
   }
 }
-    `;
+    ${RegularSiteEntityFragmentDoc}`;
 
 /**
  * __useSitesQuery__

@@ -5,25 +5,28 @@ export type SiteDocument = Site & Document
 
 @Schema()
 export class Site{
-  @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster'})
-  domainProviderId: MongoSchema.Types.ObjectId
+  // @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster', required: true})
+  @Prop({required: true})
+  domainProviderId: string
   
-  @Prop()
+  @Prop({required: true})
   domainProviderName:string
   
-  @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster'})
-  hostProviderId: MongoSchema.Types.ObjectId
+  // @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster', required: true})
+  @Prop({required: true})
+  hostProviderId: string
   
-  @Prop()
+  @Prop({required: true})
   hostProviderName: string
 
-  @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster'})
-  campaignId: MongoSchema.Types.ObjectId
+  // @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Hoster', required: true})
+  @Prop({required: true})
+  campaignId: string
   
-  @Prop()
+  @Prop({required: true})
   campaignName: string
 
-  @Prop()
+  @Prop({required: true})
   domain: string
 
   @Prop()
@@ -32,16 +35,14 @@ export class Site{
   @Prop()
   yandexId: string
 
-  // @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User', default: ''})
-  // holderId: MongoSchema.Types.ObjectId
-
-  @Prop({default: ''})
+  // @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User', default: '5fe79384e01a0249086e5226', required: true})
+  @Prop({default: '5fe79384e01a0249086e5226'})
   holderId: string
 
-  @Prop({default: ''})
+  @Prop({default: 'free'})
   holderName: string
 
-  @Prop({ default: Date.now })
+  @Prop({ default: Date.now, required: false })
   createdAt: Date;
 
 }

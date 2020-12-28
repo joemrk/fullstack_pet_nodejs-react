@@ -2,19 +2,19 @@ import { InputType, Field, ID } from "@nestjs/graphql"
 
 @InputType()
 export class SiteInput {
-  @Field(() => ID)
+  @Field()
   readonly domainProviderId: string
 
   @Field()
   readonly domainProviderName: string
 
-  @Field(() => ID)
+  @Field()
   readonly hostProviderId: string
 
   @Field()
   readonly hostProviderName: string
 
-  @Field(() => ID)
+  @Field()
   readonly campaignId: string
 
   @Field()
@@ -29,10 +29,10 @@ export class SiteInput {
   @Field()
   readonly yandexId: string
 
-  // @Field(() => ID)
-  // readonly holderId: string
+  @Field()
+  readonly holderId: string
 
-  // @Field()
-  // readonly holderName: string
+  @Field()
+  readonly holderName: string
 
 }

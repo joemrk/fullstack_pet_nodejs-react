@@ -60,34 +60,28 @@ const Auth: React.FC = (props) => {
                             paddingTop: '20vh',
                             display: 'flex',
                             height: '100vh'
-                        }}
-                    >
+                        }} >
                         <Form
                             labelAlign={'left'}
                             layout={'vertical'}
                             size={'middle'}
-                            onSubmitCapture={handleSubmit}
-                        >
+                            onSubmitCapture={handleSubmit} >
                             <Form.Item
                                 label="Username"
                                 name="username"
-                                rules={[{ required: true, message: 'Please input your username!' }]}
-                            >
+                                rules={[{ required: true, message: 'Please input your username!' }]} >
                                 <Input
                                     value={values.username}
-                                    onChange={handleChange}
-                                />
+                                    onChange={handleChange} />
                             </Form.Item>
 
                             <Form.Item
                                 label="Password"
                                 name="password"
-                                rules={[{ required: true, message: 'Please input your password!' }]}
-                            >
+                                rules={[{ required: true, message: 'Please input your password!' }]} >
                                 <Input.Password
                                     value={values.password}
-                                    onChange={handleChange}
-                                />
+                                    onChange={handleChange} />
                             </Form.Item>
 
                             <Form.Item>

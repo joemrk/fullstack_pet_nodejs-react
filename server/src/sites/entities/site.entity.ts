@@ -5,19 +5,19 @@ export class SiteEntity {
   @Field(() => ID)
   readonly id: string
 
-  @Field(() => ID)
+  @Field()
   readonly domainProviderId: string
 
   @Field()
   readonly domainProviderName: string
 
-  @Field(() => ID)
+  @Field()
   readonly hostProviderId: string
 
   @Field()
   readonly hostProviderName: string
 
-  @Field(() => ID)
+  @Field()
   readonly campaignId: string
 
   @Field()
@@ -32,7 +32,7 @@ export class SiteEntity {
   @Field()
   readonly yandexId: string
 
-  @Field(() => ID)
+  @Field()
   readonly holderId: string
 
   @Field()

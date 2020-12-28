@@ -8,7 +8,7 @@ import { SiteEntity, useCampaignsQuery, useSitesQuery } from '../../generated/gr
 
 const Sites: React.FC = (props) => {
   const history = useHistory()
-  const { data: sitesData, loading: sitesLoading, error: sitesError } = useSitesQuery({ fetchPolicy: "cache-and-network" })
+  const { data: sitesData, loading: sitesLoading} = useSitesQuery({ fetchPolicy: "cache-and-network" })
   const { data: campaignData, loading: campaignLoading } = useCampaignsQuery({ fetchPolicy: "cache-and-network" })
  
   const campaignColumnFilter = campaignData?.campaigns.map(c => {
@@ -71,17 +71,15 @@ const Sites: React.FC = (props) => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (text: string, record: SiteEntity) => (
         <Space size="middle">
           <a>Transfer</a>
           <a>Delete</a>
-          <a>Edit</a>
+          <a href={`/sites/edit?id=${record.id}`}>Edit</a>
         </Space>
       )
     }
   ];
-
-
 
 
 

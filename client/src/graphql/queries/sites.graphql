@@ -1,17 +1,5 @@
 query Sites{
   sites{
-    id
-    domainProviderId
-    domainProviderName
-    hostProviderId
-    hostProviderName
-    campaignId
-    campaignName
-    domain
-    dedicatedIp
-    yandexId
-    holderId
-    holderName
-    createdAt
+      ...RegularSiteEntity
   }
 }

@@ -1,0 +1,5 @@
+mutation UpdateSite($id: String!, $inputs: SiteInput!) {
+  updateSite(id: $id, inputs: $inputs) {
+    ...RegularSiteEntity
+  }
+}
