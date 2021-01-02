@@ -58,18 +58,14 @@ const EditSite: React.FC = (props) => {
 
 
   if (siteData?.getSiteById) {
-    console.log(siteData?.getSiteById);
-
     return (
       <Formik
-        initialValues={siteData?.getSiteById}
+        initialValues={siteData.getSiteById}
         onSubmit={async (values) => {
-          const data = ""
           console.log(values);
 
         }}
       >{({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (
-
         <Layout>
           <Form
             {...formItemLayout}
@@ -80,6 +76,7 @@ const EditSite: React.FC = (props) => {
               label="Domain provider">
               <Select
                 {...selectSearchProps}
+                defaultValue={values.domainProviderId}
                 onChange={(_, o: any) => {
                   values.domainProviderId = o.value
                   values.domainProviderName = o.children
@@ -92,6 +89,7 @@ const EditSite: React.FC = (props) => {
               label="Host provider">
               <Select
                 {...selectSearchProps}
+                defaultValue={values.hostProviderId}
                 onChange={(_, o: any) => {
                   values.hostProviderId = o.value
                   values.hostProviderName = o.children
@@ -104,6 +102,7 @@ const EditSite: React.FC = (props) => {
               label="Campaign">
               <Select
                 {...selectSearchProps}
+                defaultValue={values.campaignId}
                 onChange={(_, o: any) => {
                   values.campaignId = o.value
                   values.campaignName = o.children
@@ -117,28 +116,24 @@ const EditSite: React.FC = (props) => {
               label="Domain"
               name="domain" >
               <Input
-                onFocus={() => {
-                  console.log(values.domain)
-                }}
-                value={values.domain}
-                onChange={handleChange}
-              />
+                defaultValue={values.domain}
+                onChange={handleChange} />
             </Form.Item>
+
             <Form.Item
+
               label="Dedicated IP"
               name="dedicatedIp" >
               <Input
-                value={values.dedicatedIp}
-                onChange={handleChange}
-              />
+                defaultValue={values.dedicatedIp}
+                onChange={handleChange} />
             </Form.Item>
             <Form.Item
               label="Yandex metrika ID"
               name="yandexId" >
               <Input
-                value={values.yandexId}
-                onChange={handleChange}
-              />
+                defaultValue={values.yandexId}
+                onChange={handleChange} />
             </Form.Item>
             <br />
             <Form.Item
@@ -146,6 +141,7 @@ const EditSite: React.FC = (props) => {
               label="Holder">
               <Select
                 {...selectSearchProps}
+                defaultValue={values.holderId}
                 onChange={(_, o: any) => {
                   values.holderId = o.value
                   values.holderName = o.children
@@ -166,8 +162,6 @@ const EditSite: React.FC = (props) => {
               >Save</Button>
             </Form.Item>
           </Form>
-
-
         </Layout>
       )}
       </Formik>
