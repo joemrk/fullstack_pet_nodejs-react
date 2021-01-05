@@ -43,12 +43,11 @@ const CreateHoster: React.FC = (props) => {
         <Form
           {...formItemLayout}
           layout={'horizontal'}
-          onSubmitCapture={handleSubmit}
-        >
+          onSubmitCapture={handleSubmit} >
           <Form.Item
+          rules={[{ required: true, message: 'Please input this field!' }]}
             label="Hoster name"
-            name="hosterName"
-          >
+            name="hosterName" >
             <Input
               value={values.hosterName}
               placeholder="Hoster namer"
@@ -56,9 +55,9 @@ const CreateHoster: React.FC = (props) => {
             />
           </Form.Item>
           <Form.Item
+          rules={[{ required: true, message: 'Please input this field!' }]}
             label="Site link"
-            name="siteLink"
-          >
+            name="siteLink" >
             <Input
               value={values.siteLink}
               placeholder="Site link"
@@ -67,19 +66,18 @@ const CreateHoster: React.FC = (props) => {
           </Form.Item>
           <br />
           <Form.Item
+          rules={[{ required: true, message: 'Please input this field!' }]}
             label="Login link"
-            name="link"
-          >
+            name="link" >
             <Input
               value={values.link}
               placeholder="Login link"
-              onChange={handleChange}
-            />
+              onChange={handleChange} />
           </Form.Item>
           <Form.Item
+          rules={[{ required: true, message: 'Please input this field!' }]}
             label="Login"
-            name="login"
-          >
+            name="login" >
             <Input
               value={values.login}
               placeholder="Login"
@@ -87,9 +85,9 @@ const CreateHoster: React.FC = (props) => {
             />
           </Form.Item>
           <Form.Item
+          rules={[{ required: true, message: 'Please input this field!' }]}
             label="Password"
-            name="password"
-          >
+            name="password" >
             <Input
               value={values.passsword}
               placeholder="Password"
@@ -108,8 +106,6 @@ const CreateHoster: React.FC = (props) => {
             >Create</Button>
           </Form.Item>
         </Form>
-
-
       </Layout>
     )}
     </Formik>

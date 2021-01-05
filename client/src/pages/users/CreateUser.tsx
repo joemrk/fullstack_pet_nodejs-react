@@ -17,26 +17,30 @@ const buttonItemLayout = {
 
 
 
-const CreateUser: React.FC = ({}) => {
+const CreateUser: React.FC = ({ }) => {
   const [registration] = useRegisterMutation()
   const history = useHistory()
 
 
   return (
     <Formik
-      initialValues={{ username: '', password: '', yandexLogin:'', telegram:'', errors: [''] }}
+      initialValues={{ username: '', password: '', yandexLogin: '', telegram: '', errors: [''] }}
       onSubmit={async (values) => {
-        const data = await registration({variables: {input: {
-          username: values.username,
-          password: values.password,
-          yandexLogin: values.yandexLogin,
-          telegram: values.telegram
-        }}})
+        const data = await registration({
+          variables: {
+            input: {
+              username: values.username,
+              password: values.password,
+              yandexLogin: values.yandexLogin,
+              telegram: values.telegram
+            }
+          }
+        })
         console.log(data);
-        
-        if(data.data?.registration.error) values.errors = data.data?.registration.error
-        if(data.data?.registration.token) history.push('/users')
-        
+
+        if (data.data?.registration.error) values.errors = data.data?.registration.error
+        if (data.data?.registration.token) history.push('/users')
+
       }} >
       {({ values, handleChange, isSubmitting, handleSubmit }) => (
         <Layout>
@@ -46,6 +50,7 @@ const CreateUser: React.FC = ({}) => {
             onSubmitCapture={handleSubmit} >
 
             <Form.Item
+              rules={[{ required: true, message: 'Please input this field!' }]}
               label="Username"
               name="username" >
               <Input
@@ -53,6 +58,7 @@ const CreateUser: React.FC = ({}) => {
                 onChange={handleChange} />
             </Form.Item>
             <Form.Item
+              rules={[{ required: true, message: 'Please input this field!' }]}
               label="Password"
               name="password" >
               <Input
@@ -63,16 +69,15 @@ const CreateUser: React.FC = ({}) => {
               label="Yandex"
               name="yandexLogin" >
               <Input
-              placeholder="username"
+                placeholder="username"
                 value={values.yandexLogin}
                 onChange={handleChange} />
             </Form.Item>
-
             <Form.Item
               label="Telegram"
               name="telegram" >
               <Input
-              placeholder="@username"
+                placeholder="@username"
                 value={values.telegram}
                 onChange={handleChange} />
             </Form.Item>

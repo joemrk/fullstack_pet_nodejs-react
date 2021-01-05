@@ -38,6 +38,7 @@ const CreateCampaign: React.FC = ({ }) => {
             onSubmitCapture={handleSubmit} >
 
             <Form.Item
+            rules={[{ required: true, message: 'Please input this field!' }]}
               label="Campaign langue"
               name="langue" >
               <Input
@@ -45,6 +46,7 @@ const CreateCampaign: React.FC = ({ }) => {
                 onChange={handleChange} />
             </Form.Item>
             <Form.Item
+            rules={[{ required: true, message: 'Please input this field!' }]}
               label="Campaign name"
               name="campaignName" >
               <Input
