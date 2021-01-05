@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import * as queryString from 'querystring';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCampaignsQuery, useHostersQuery, useSiteQuery, useUsersQuery } from '../../generated/graphql';
+import { useCampaignsQuery, useHostersQuery, useSiteQuery, useUsersQuery, useUpdateSiteMutation } from '../../generated/graphql';
 
 
 
@@ -41,6 +41,8 @@ const EditSite: React.FC = (props) => {
 
   const { data: siteData, loading: siteLoading } = useSiteQuery({ variables: { id: siteId } })
 
+  const [updateSite] = useUpdateSiteMutation()
+
 
   if (hostersLoading || campaignLoading || usersLoading || siteLoading) return <div>Loading...</div>
 
@@ -58,13 +60,16 @@ const EditSite: React.FC = (props) => {
 
 
   if (siteData?.getSiteById) {
+    const { id, createdAt, __typename, ...shitInitialValues } = siteData?.getSiteById
+    const initialValues = shitInitialValues
     return (
       <Formik
-        initialValues={siteData.getSiteById}
+        initialValues={initialValues}
         onSubmit={async (values) => {
-          console.log(values);
+          const data = await updateSite({ variables: { id, inputs: values } })
+          if (data.data?.updateSite) history.push('/sites')
         }} >
-        {({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (
+        {({ values, handleChange, isSubmitting, handleSubmit }) => (
           <Layout>
             <Form
               {...formItemLayout}
