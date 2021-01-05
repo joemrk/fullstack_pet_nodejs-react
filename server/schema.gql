@@ -79,6 +79,7 @@ type Query {
 type Mutation {
   createSite(inputs: SiteInput!): SiteEntity!
   updateSite(inputs: SiteInput!, id: String!): SiteEntity!
+  changeSiteHolder(newHolderName: String!, newHolderId: String!, siteId: String!): SiteEntity!
   createHoster(createHosterInput: HosterInput!): HosterEntity!
   removeHoster(id: Int!): HosterEntity!
   registration(input: UserInput!): TokenResponse!

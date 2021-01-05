@@ -1,9 +1,9 @@
-import React from 'react'
-import { Formik } from 'formik'
+import { Button, Form, Input } from 'antd';
 import Layout from 'antd/lib/layout/layout';
-import { Button, Form, Input, Space } from 'antd';
-import { useCreateCampaignMutation } from '../../generated/graphql';
+import { Formik } from 'formik';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useCreateCampaignMutation } from '../../generated/graphql';
 
 
 const formItemLayout = {
@@ -20,7 +20,6 @@ const CreateCampaign: React.FC = ({ }) => {
 
   const [createCampaign] = useCreateCampaignMutation()
   const history = useHistory()
-
 
   return (
     <Formik

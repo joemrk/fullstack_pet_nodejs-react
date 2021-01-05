@@ -46,4 +46,12 @@ export class SitesResolver {
   ) {
     return await this.sitesService.findOne(id)
   }
+  @Mutation(()=> SiteEntity)
+  async changeSiteHolder(
+    @Args('siteId') siteId:string,
+    @Args('newHolderId') newHolderId:string,
+    @Args('newHolderName') newHolderName:string,
+  ){
+    return await this.sitesService.changeSiteHolder(siteId, newHolderId, newHolderName)
+  }
 }

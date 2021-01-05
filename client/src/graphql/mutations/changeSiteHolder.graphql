@@ -1,0 +1,5 @@
+mutation ChangeSiteHolder($siteId:String!, $newHolderId:String!, $newHolderName:String!){
+  changeSiteHolder(siteId: $siteId,newHolderId:$newHolderId, newHolderName:$newHolderName){
+    ...RegularSiteEntity
+  }
+}

@@ -122,6 +122,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createSite: SiteEntity;
   updateSite: SiteEntity;
+  changeSiteHolder: SiteEntity;
   createHoster: HosterEntity;
   removeHoster: HosterEntity;
   registration: TokenResponse;
@@ -138,6 +139,13 @@ export type MutationCreateSiteArgs = {
 export type MutationUpdateSiteArgs = {
   inputs: SiteInput;
   id: Scalars['String'];
+};
+
+
+export type MutationChangeSiteHolderArgs = {
+  newHolderName: Scalars['String'];
+  newHolderId: Scalars['String'];
+  siteId: Scalars['String'];
 };
 
 
@@ -240,6 +248,21 @@ export type RegularUserResponseFragment = (
     { __typename?: 'UserEntity' }
     & RegularUserFragment
   )> }
+);
+
+export type ChangeSiteHolderMutationVariables = Exact<{
+  siteId: Scalars['String'];
+  newHolderId: Scalars['String'];
+  newHolderName: Scalars['String'];
+}>;
+
+
+export type ChangeSiteHolderMutation = (
+  { __typename?: 'Mutation' }
+  & { changeSiteHolder: (
+    { __typename?: 'SiteEntity' }
+    & RegularSiteEntityFragment
+  ) }
 );
 
 export type CreateCampaignMutationVariables = Exact<{
@@ -450,6 +473,44 @@ export const RegularUserResponseFragmentDoc = gql`
   }
 }
     ${RegularUserFragmentDoc}`;
+export const ChangeSiteHolderDocument = gql`
+    mutation ChangeSiteHolder($siteId: String!, $newHolderId: String!, $newHolderName: String!) {
+  changeSiteHolder(
+    siteId: $siteId
+    newHolderId: $newHolderId
+    newHolderName: $newHolderName
+  ) {
+    ...RegularSiteEntity
+  }
+}
+    ${RegularSiteEntityFragmentDoc}`;
+export type ChangeSiteHolderMutationFn = Apollo.MutationFunction<ChangeSiteHolderMutation, ChangeSiteHolderMutationVariables>;
+
+/**
+ * __useChangeSiteHolderMutation__
+ *
+ * To run a mutation, you first call `useChangeSiteHolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeSiteHolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeSiteHolderMutation, { data, loading, error }] = useChangeSiteHolderMutation({
+ *   variables: {
+ *      siteId: // value for 'siteId'
+ *      newHolderId: // value for 'newHolderId'
+ *      newHolderName: // value for 'newHolderName'
+ *   },
+ * });
+ */
+export function useChangeSiteHolderMutation(baseOptions?: Apollo.MutationHookOptions<ChangeSiteHolderMutation, ChangeSiteHolderMutationVariables>) {
+        return Apollo.useMutation<ChangeSiteHolderMutation, ChangeSiteHolderMutationVariables>(ChangeSiteHolderDocument, baseOptions);
+      }
+export type ChangeSiteHolderMutationHookResult = ReturnType<typeof useChangeSiteHolderMutation>;
+export type ChangeSiteHolderMutationResult = Apollo.MutationResult<ChangeSiteHolderMutation>;
+export type ChangeSiteHolderMutationOptions = Apollo.BaseMutationOptions<ChangeSiteHolderMutation, ChangeSiteHolderMutationVariables>;
 export const CreateCampaignDocument = gql`
     mutation CreateCampaign($input: CampaignInput!) {
   createCampaign(campaignInput: $input) {

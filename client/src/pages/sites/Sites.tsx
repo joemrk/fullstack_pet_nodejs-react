@@ -1,16 +1,56 @@
-import { Button, Divider, Space, Table } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { Button, Divider, Dropdown, Menu, Space, Table } from 'antd';
 import Layout from 'antd/lib/layout/layout';
-import React from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { SiteEntity, useCampaignsQuery, useSitesQuery } from '../../generated/graphql';
+import { SiteEntity, useCampaignsQuery, useChangeSiteHolderMutation, useSitesQuery, useUsersQuery } from '../../generated/graphql';
 
 
 
 const Sites: React.FC = (props) => {
   const history = useHistory()
-  const { data: sitesData, loading: sitesLoading} = useSitesQuery({ fetchPolicy: "cache-and-network" })
+  const [tableLoading, setTableLoading] = useState(true)
+  const [transferredSite, setTransferredSite] = useState('')
+
+  const { data: sitesData, loading: sitesLoading } = useSitesQuery({ fetchPolicy: "cache-and-network" })
   const { data: campaignData, loading: campaignLoading } = useCampaignsQuery({ fetchPolicy: "cache-and-network" })
- 
+  const { data: usersData, loading: usersLoading } = useUsersQuery({ fetchPolicy: "cache-and-network" })
+
+  const [changeSiteHolder] = useChangeSiteHolderMutation()
+
+
+
+
+
+  const changeHolderClick = async (e: MouseEvent) => {
+    e.preventDefault()
+    const newHolderId = e.currentTarget.getAttribute('data-id')
+    const newHolderName = e.currentTarget.getAttribute('data-name')
+    if(newHolderId && newHolderName && transferredSite !== ''){
+      const data = await changeSiteHolder({variables:{
+        siteId:transferredSite,
+        newHolderId,
+        newHolderName
+      }})
+      if(!data.data?.changeSiteHolder) alert('Cant transfer holder (')
+    } else alert('Cant transfer holder (')
+    
+  }
+
+  const transferUsersMenuItem = usersData?.users.map((u, k) => {
+    return (
+      <Menu.Item key={k}>
+        <a onClick={e => { changeHolderClick(e) }} data-name={u.username} data-id={u.id}>{u.username}</a>
+      </Menu.Item>
+    )
+  }) || []
+  const transferUsersDropdown = (
+    <Menu>{transferUsersMenuItem}</Menu>
+  );
+
+
+
+
   const campaignColumnFilter = campaignData?.campaigns.map(c => {
     return {
       text: c.fullCampaignName,
@@ -73,7 +113,8 @@ const Sites: React.FC = (props) => {
       key: "action",
       render: (text: string, record: SiteEntity) => (
         <Space size="middle">
-          <a>Transfer</a>
+          {/* <a href="#" className="ant-dropdown-link">Transfer <DownOutlined /></a> */}
+          <TransferHolderLinks siteId={record.id} users={transferUsersDropdown} setTransferredSite={setTransferredSite} />
           <a>Delete</a>
           <a href={`/sites/edit?id=${record.id}`}>Edit</a>
         </Space>
@@ -82,8 +123,10 @@ const Sites: React.FC = (props) => {
   ];
 
 
+  React.useEffect(() => {
+    if (!sitesLoading || !campaignLoading || !usersLoading) setTableLoading(false)
+  }, [campaignLoading, sitesLoading, usersLoading, sitesData])
 
-  if (sitesLoading || campaignLoading) return <div>Loading...</div>
 
   return (
     <Layout>
@@ -91,25 +134,51 @@ const Sites: React.FC = (props) => {
         <Button
           type="primary"
           size={'large'}
-          onClick={() => { history.push('/sites/create') }}
-        > Create
+          onClick={() => { history.push('/sites/create') }} >
+          Create
       </Button>
       </div>
       <br />
 
       <Divider />
       <Table
+        loading={tableLoading}
         rowSelection={{
           type: 'checkbox',
           ...rowSelection,
         }}
         dataSource={sitesData?.sites}
-        // dataSource={[]}
         columns={columns} />
-
-
 
     </Layout>
   )
 }
+
+interface TransferHolderLinksProps {
+  readonly siteId: string
+  readonly users: any
+  readonly setTransferredSite: (siteId: string) => void
+}
+
+const TransferHolderLinks: React.FC<TransferHolderLinksProps> = ({ siteId, users, setTransferredSite }) => {
+
+  const transferredClick = (e: MouseEvent) => {
+    e.preventDefault()
+    setTransferredSite(siteId)
+  }
+
+  return (
+    <Dropdown
+      overlay={users}
+      trigger={['click']}
+      overlayStyle={{ maxHeight: '150px', overflowY: "auto" }}>
+      <a className="ant-dropdown-link" onClick={e => transferredClick(e)}>
+        Transfer <DownOutlined />
+      </a>
+    </Dropdown>
+  )
+}
+
+
+
 export default Sites

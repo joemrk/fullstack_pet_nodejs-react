@@ -5,6 +5,8 @@ import reportWebVitals from './reportWebVitals';
 // import 'antd/dist/antd.min.css'
 import 'antd/dist/antd.dark.css'
 import 'antd/dist/antd.min.js'
+import './styles/app.css'
+
 
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -20,17 +22,9 @@ const httpLink = createHttpLink({
     headers: {
       ...headers,
       ...(token ? {authorization: `Bearer ${token}`} : {}),
-      // ...(userData ? {user: `${userData}`} : {}),
     }
   }
 });
-
-// const userLink = setContext((_, previousContext) => ({
-//   previousContext:{
-//     ...previousContext,
-//     user: {role: 'role'}
-//   }
-// }));
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),

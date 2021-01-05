@@ -45,4 +45,14 @@ export class SitesService {
   async findByHolder(holderId: string ): Promise<Site[]>{
     return await this.siteModel.find({holder: holderId})
   }
+
+  async changeSiteHolder(siteId: string, newHolderId: string, newHolderName: string){
+    const site = await this.siteModel.findById(siteId)
+    if(!site) throw new NotFoundException('Site not found.')
+
+    site.holderId = newHolderId
+    site.holderName = newHolderName
+
+    return await site.save()
+  }
 }

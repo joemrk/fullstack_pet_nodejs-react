@@ -63,107 +63,105 @@ const EditSite: React.FC = (props) => {
         initialValues={siteData.getSiteById}
         onSubmit={async (values) => {
           console.log(values);
+        }} >
+        {({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (
+          <Layout>
+            <Form
+              {...formItemLayout}
+              layout={'horizontal'}
+              onSubmitCapture={handleSubmit} >
+              <Form.Item
+                name="domainProvider"
+                label="Domain provider">
+                <Select
+                  {...selectSearchProps}
+                  defaultValue={values.domainProviderId}
+                  onChange={(_, o: any) => {
+                    values.domainProviderId = o.value
+                    values.domainProviderName = o.children
+                  }} >
+                  {hosterSelect}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name="hostProvider"
+                label="Host provider">
+                <Select
+                  {...selectSearchProps}
+                  defaultValue={values.hostProviderId}
+                  onChange={(_, o: any) => {
+                    values.hostProviderId = o.value
+                    values.hostProviderName = o.children
+                  }} >
+                  {hosterSelect}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name="campaign"
+                label="Campaign">
+                <Select
+                  {...selectSearchProps}
+                  defaultValue={values.campaignId}
+                  onChange={(_, o: any) => {
+                    values.campaignId = o.value
+                    values.campaignName = o.children
+                  }} >
+                  {campaignSelect}
+                </Select>
+              </Form.Item>
 
-        }}
-      >{({ values, handleChange, isSubmitting, handleSubmit, setFieldValue }) => (
-        <Layout>
-          <Form
-            {...formItemLayout}
-            layout={'horizontal'}
-            onSubmitCapture={handleSubmit} >
-            <Form.Item
-              name="domainProvider"
-              label="Domain provider">
-              <Select
-                {...selectSearchProps}
-                defaultValue={values.domainProviderId}
-                onChange={(_, o: any) => {
-                  values.domainProviderId = o.value
-                  values.domainProviderName = o.children
-                }} >
-                {hosterSelect}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="hostProvider"
-              label="Host provider">
-              <Select
-                {...selectSearchProps}
-                defaultValue={values.hostProviderId}
-                onChange={(_, o: any) => {
-                  values.hostProviderId = o.value
-                  values.hostProviderName = o.children
-                }} >
-                {hosterSelect}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="campaign"
-              label="Campaign">
-              <Select
-                {...selectSearchProps}
-                defaultValue={values.campaignId}
-                onChange={(_, o: any) => {
-                  values.campaignId = o.value
-                  values.campaignName = o.children
-                }} >
-                {campaignSelect}
-              </Select>
-            </Form.Item>
 
+              <Form.Item
+                label="Domain"
+                name="domain" >
+                <Input
+                  defaultValue={values.domain}
+                  onChange={handleChange} />
+              </Form.Item>
 
-            <Form.Item
-              label="Domain"
-              name="domain" >
-              <Input
-                defaultValue={values.domain}
-                onChange={handleChange} />
-            </Form.Item>
+              <Form.Item
+                label="Dedicated IP"
+                name="dedicatedIp" >
+                <Input
+                  defaultValue={values.dedicatedIp}
+                  onChange={handleChange} />
+              </Form.Item>
+              <Form.Item
+                label="Yandex metrika ID"
+                name="yandexId" >
+                <Input
+                  defaultValue={values.yandexId}
+                  onChange={handleChange} />
+              </Form.Item>
+              <br />
+              <Form.Item
+                name="holderName"
+                label="Holder">
+                <Select
+                  {...selectSearchProps}
+                  defaultValue={values.holderId}
+                  onChange={(_, o: any) => {
+                    values.holderId = o.value
+                    values.holderName = o.children
+                  }} >
+                  {usersSelect}
+                </Select>
+              </Form.Item>
 
-            <Form.Item
-
-              label="Dedicated IP"
-              name="dedicatedIp" >
-              <Input
-                defaultValue={values.dedicatedIp}
-                onChange={handleChange} />
-            </Form.Item>
-            <Form.Item
-              label="Yandex metrika ID"
-              name="yandexId" >
-              <Input
-                defaultValue={values.yandexId}
-                onChange={handleChange} />
-            </Form.Item>
-            <br />
-            <Form.Item
-              name="holderName"
-              label="Holder">
-              <Select
-                {...selectSearchProps}
-                defaultValue={values.holderId}
-                onChange={(_, o: any) => {
-                  values.holderId = o.value
-                  values.holderName = o.children
-                }} >
-                {usersSelect}
-              </Select>
-            </Form.Item>
-
-            <br />
-            <Form.Item {...buttonItemLayout}>
-              <Button
-                type="primary"
-                htmlType="button"
-                loading={isSubmitting}
-                onClick={() => {
-                  handleSubmit();
-                }}
-              >Save</Button>
-            </Form.Item>
-          </Form>
-        </Layout>
-      )}
+              <br />
+              <Form.Item {...buttonItemLayout}>
+                <Button
+                  type="primary"
+                  htmlType="button"
+                  loading={isSubmitting}
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >Save</Button>
+              </Form.Item>
+            </Form>
+          </Layout>
+        )}
       </Formik>
     )
   }
